@@ -18,7 +18,6 @@ requirejs.config({
 		text: 'bower-libs/requirejs-text/text',
 		bootstrap: 'bower-libs/bootstrap/dist/js/bootstrap',
 		requirejs: 'bower-libs/requirejs/require',
-		'google-code-prettify': 'bower-libs/google-code-prettify/src/prettify',
 		highlightjs: 'libs/highlight/highlight.pack',
 		'requirejs-text': 'bower-libs/requirejs-text/text',
 		'pagedown-extra': 'bower-libs/pagedown-extra/node-pagedown-extra',

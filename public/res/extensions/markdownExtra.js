@@ -4,7 +4,6 @@ define([
 	"underscore",
 	"utils",
 	"classes/Extension",
-	'google-code-prettify',
 	'highlightjs',
 	'crel',
 	'pagedownExtra'
@@ -107,9 +106,6 @@ define([
 					elt.highlighted = true;
 				});
 			});
-		}
-		else if(markdownExtra.config.highlighter == "prettify") {
-			editor.hooks.chain("onPreviewRefresh", prettify.prettyPrint);
 		}
 		Markdown.Extra.init(converter, extraOptions);
 	};
