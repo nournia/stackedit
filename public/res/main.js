@@ -14,7 +14,6 @@ requirejs.config({
 		underscore: 'bower-libs/underscore/underscore',
 		crel: 'bower-libs/crel/crel',
 		mousetrap: 'bower-libs/mousetrap/mousetrap',
-		'mousetrap-record': 'bower-libs/mousetrap/plugins/record/mousetrap-record',
 		text: 'bower-libs/requirejs-text/text',
 		bootstrap: 'bower-libs/bootstrap/dist/js/bootstrap',
 		requirejs: 'bower-libs/requirejs/require',
@@ -63,12 +62,6 @@ requirejs.config({
 			'bower-libs/prism/components/prism-markup',
 			'libs/prism-latex'
 		],
-		'bootstrap-record': [
-			'mousetrap'
-		],
-		FileSaver: {
-			exports: 'saveAs'
-		},
 		highlightjs: {
 			exports: 'hljs'
 		},
