@@ -12,8 +12,7 @@ define([
 	"extensions/partialRendering",
 	"extensions/markdownExtra",
 	"extensions/shortcuts",
-	"bootstrap",
-	"jquery-waitforimages"
+	"bootstrap"
 ], function($, _, crel, mousetrap, utils, logger, Extension, settings, settingsExtensionsAccordionHTML) {
 
 	var eventMgr = {};
@@ -215,7 +214,6 @@ define([
 		recursiveCall(onAsyncPreviewListenerList.concat([
 			function(callback) {
 				// We assume some images are loading asynchronously after the preview
-				$previewContentsElt.waitForImages(callback);
 			}
 		]));
 	};

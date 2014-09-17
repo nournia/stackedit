@@ -25,7 +25,6 @@ requirejs.config({
 		requirejs: 'bower-libs/requirejs/require',
 		'google-code-prettify': 'bower-libs/google-code-prettify/src/prettify',
 		highlightjs: 'libs/highlight/highlight.pack',
-		'jquery-waitforimages': 'bower-libs/waitForImages/src/jquery.waitforimages',
 		'requirejs-text': 'bower-libs/requirejs-text/text',
 		css_browser_selector: 'bower-libs/css_browser_selector/css_browser_selector',
 		'pagedown-extra': 'bower-libs/pagedown-extra/node-pagedown-extra',
@@ -43,7 +42,6 @@ requirejs.config({
 		diff_match_patch: 'bower-libs/google-diff-match-patch-js/diff_match_patch',
 		diff_match_patch_uncompressed: 'bower-libs/google-diff-match-patch-js/diff_match_patch_uncompressed',
 		jsondiffpatch: 'bower-libs/jsondiffpatch/build/bundle',
-		waitForImages: 'bower-libs/waitForImages/dist/jquery.waitforimages'
 	},
 	shim: {
 		underscore: {
@@ -87,9 +85,6 @@ requirejs.config({
 			exports: 'hljs'
 		},
 		bootstrap: [
-			'jquery'
-		],
-		'jquery-waitforimages': [
 			'jquery'
 		],
 		pagedown: [
