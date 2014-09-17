@@ -151,14 +151,13 @@ if(window.baseDir.indexOf('-min') !== -1) {
 	themeModule = "css!themes/" + window.theme;
 }
 
-// RequireJS entry point. By requiring synchronizer, publisher and
-// media-importer, we are actually loading all the modules
 require([
 	"jquery",
 	"rangy",
 	"core",
 	"eventMgr",
-	"mediaImporter",
+	"constants",
+	"classes/Provider",
 	"css",
 	"rangy-cssclassapplier",
 	themeModule
