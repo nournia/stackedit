@@ -3,14 +3,27 @@ define([
 	"underscore",
 	"utils",
 	"mousetrap",
-	"classes/Extension",
-	"text!extensions/shortcutsDefaultMapping.settings"
-], function($, _, utils, mousetrap, Extension, shortcutsDefaultMapping) {
+	"classes/Extension"
+], function($, _, utils, mousetrap, Extension) {
 
 	var shortcuts = new Extension("shortcuts", "Shortcuts", true, true);
 	shortcuts.settingsBlock = '';
 	shortcuts.defaultConfig = {
-		mapping: shortcutsDefaultMapping
+		mapping: {
+			'mod+b': bindPagedownButton('bold'),
+			'mod+i': bindPagedownButton('italic'),
+			'mod+l': bindPagedownButton('link'),
+			'mod+q': bindPagedownButton('quote'),
+			'mod+k': bindPagedownButton('code'),
+			'mod+g': bindPagedownButton('image'),
+			'mod+o': bindPagedownButton('olist'),
+			'mod+u': bindPagedownButton('ulist'),
+			'mod+h': bindPagedownButton('heading'),
+			'mod+r': bindPagedownButton('hr'),
+			'mod+z': bindPagedownButton('undo'),
+			'mod+y': bindPagedownButton('redo'),
+			'mod+shift+z': bindPagedownButton('redo')
+		}
 	};
 
 	var eventMgr;
