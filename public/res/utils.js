@@ -3,10 +3,8 @@ define([
 	"underscore",
 	"storage",
 	"crel",
-	"xregexp",
-	"stacktrace",
-	"FileSaver"
-], function($, _, storage, crel, XRegExp, printStackTrace, saveAs) {
+	"xregexp"
+], function($, _, storage, crel, XRegExp) {
 
 	var utils = {};
 
@@ -529,7 +527,6 @@ define([
 		}
 	};
 	utils.logStackTrace = function() {
-		eventList.unshift(printStackTrace());
 		if(eventList.length > 5) {
 			eventList.pop();
 		}

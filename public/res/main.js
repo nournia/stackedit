@@ -20,22 +20,12 @@ requirejs.config({
 		crel: 'bower-libs/crel/crel',
 		mousetrap: 'bower-libs/mousetrap/mousetrap',
 		'mousetrap-record': 'bower-libs/mousetrap/plugins/record/mousetrap-record',
-		toMarkdown: 'bower-libs/to-markdown/src/to-markdown',
 		text: 'bower-libs/requirejs-text/text',
 		bootstrap: 'bower-libs/bootstrap/dist/js/bootstrap',
 		requirejs: 'bower-libs/requirejs/require',
 		'google-code-prettify': 'bower-libs/google-code-prettify/src/prettify',
 		highlightjs: 'libs/highlight/highlight.pack',
 		'jquery-waitforimages': 'bower-libs/waitForImages/src/jquery.waitforimages',
-		'jquery-ui': 'bower-libs/jquery-ui/ui/jquery-ui',
-		'jquery-ui-core': 'bower-libs/jquery-ui/ui/jquery.ui.core',
-		'jquery-ui-widget': 'bower-libs/jquery-ui/ui/jquery.ui.widget',
-		'jquery-ui-mouse': 'bower-libs/jquery-ui/ui/jquery.ui.mouse',
-		'jquery-ui-draggable': 'bower-libs/jquery-ui/ui/jquery.ui.draggable',
-		'jquery-ui-effect': 'bower-libs/jquery-ui/ui/jquery.ui.effect',
-		'jquery-ui-effect-slide': 'bower-libs/jquery-ui/ui/jquery.ui.effect-slide',
-		FileSaver: 'bower-libs/FileSaver/FileSaver',
-		stacktrace: 'bower-libs/stacktrace/stacktrace',
 		'requirejs-text': 'bower-libs/requirejs-text/text',
 		css_browser_selector: 'bower-libs/css_browser_selector/css_browser_selector',
 		'pagedown-extra': 'bower-libs/pagedown-extra/node-pagedown-extra',
@@ -54,9 +44,7 @@ requirejs.config({
 		diff_match_patch_uncompressed: 'bower-libs/google-diff-match-patch-js/diff_match_patch_uncompressed',
 		jsondiffpatch: 'bower-libs/jsondiffpatch/build/bundle',
 		hammerjs: 'bower-libs/hammerjs/hammer',
-		'to-markdown': 'bower-libs/to-markdown/src/to-markdown',
-		waitForImages: 'bower-libs/waitForImages/dist/jquery.waitforimages',
-		MathJax: 'bower-libs/MathJax/MathJax'
+		waitForImages: 'bower-libs/waitForImages/dist/jquery.waitforimages'
 	},
 	shim: {
 		underscore: {
@@ -93,15 +81,6 @@ requirejs.config({
 		'bootstrap-record': [
 			'mousetrap'
 		],
-		toMarkdown: {
-			deps: [
-				'jquery'
-			],
-			exports: 'toMarkdown'
-		},
-		stacktrace: {
-			exports: 'printStackTrace'
-		},
 		FileSaver: {
 			exports: 'saveAs'
 		},
