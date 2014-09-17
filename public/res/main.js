@@ -4,11 +4,6 @@ requirejs.config({
 	waitSeconds: 0,
 	packages: [
 		{
-			name: 'css',
-			location: 'bower-libs/require-css',
-			main: 'css'
-		},
-		{
 			name: 'less',
 			location: 'bower-libs/require-less',
 			main: 'less'
@@ -26,14 +21,9 @@ requirejs.config({
 		'google-code-prettify': 'bower-libs/google-code-prettify/src/prettify',
 		highlightjs: 'libs/highlight/highlight.pack',
 		'requirejs-text': 'bower-libs/requirejs-text/text',
-		css_browser_selector: 'bower-libs/css_browser_selector/css_browser_selector',
 		'pagedown-extra': 'bower-libs/pagedown-extra/node-pagedown-extra',
 		pagedownExtra: 'bower-libs/pagedown-extra/Markdown.Extra',
 		pagedown: 'libs/Markdown.Editor',
-		'require-css': 'bower-libs/require-css/css',
-		css: 'bower-libs/require-css/css',
-		'css-builder': 'bower-libs/require-css/css-builder',
-		normalize: 'bower-libs/require-css/normalize',
 		prism: 'bower-libs/prism/prism',
 		'prism-core': 'bower-libs/prism/components/prism-core',
 		rangy: 'bower-libs/rangy/rangy-core',
@@ -119,9 +109,6 @@ window.viewerMode = /(^| )viewer($| )/.test(document.body.className);
 // Keep the theme in a global variable
 window.theme = localStorage.themeV4 || 'default';
 var themeModule = "less!themes/" + window.theme;
-if(window.baseDir.indexOf('-min') !== -1) {
-	themeModule = "css!themes/" + window.theme;
-}
 
 require([
 	"jquery",
@@ -130,7 +117,6 @@ require([
 	"eventMgr",
 	"constants",
 	"classes/Provider",
-	"css",
 	"rangy-cssclassapplier",
 	themeModule
 ], function($, rangy, core, eventMgr) {
