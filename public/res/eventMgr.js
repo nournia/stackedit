@@ -4,7 +4,6 @@ define([
 	"crel",
 	"mousetrap",
 	"utils",
-	"logger",
 	"classes/Extension",
 	"settings",
 	"extensions/markdownSectionParser",
@@ -12,7 +11,7 @@ define([
 	"extensions/markdownExtra",
 	"extensions/shortcuts",
 	"bootstrap"
-], function($, _, crel, mousetrap, utils, logger, Extension, settings) {
+], function($, _, crel, mousetrap, utils, Extension, settings) {
 
 	var eventMgr = {};
 
@@ -54,7 +53,6 @@ define([
 	function createEventHook(eventName) {
 		eventListenerListMap[eventName] = getExtensionListenerList(eventName);
 		return function() {
-			logger.log(eventName, arguments);
 			var eventArguments = arguments;
 			_.each(eventListenerListMap[eventName], function(listener) {
 				// Use try/catch in case userCustom listener contains error
@@ -88,7 +86,6 @@ define([
 
 	// Load/Save extension config from/to settings
 	eventMgr.onLoadSettings = function() {
-		logger.log("onLoadSettings");
 		_.each(extensionList, function(extension) {
 			var isChecked = !extension.isOptional || extension.config.enabled === undefined || extension.config.enabled === true;
 			utils.setInputChecked("#input-enable-extension-" + extension.extensionId, isChecked);
@@ -104,7 +101,6 @@ define([
 		});
 	};
 	eventMgr.onSaveSettings = function(newExtensionSettings, event) {
-		logger.log("onSaveSettings");
 		_.each(extensionList, function(extension) {
 			var newExtensionConfig = _.extend({}, extension.defaultConfig);
 			newExtensionConfig.enabled = utils.getInputChecked("#input-enable-extension-" + extension.extensionId);
@@ -192,7 +188,6 @@ define([
 	var previewContentsElt;
 	var $previewContentsElt;
 	eventMgr.onAsyncPreview = function() {
-		logger.log("onAsyncPreview");
 		function recursiveCall(callbackList) {
 			var callback = callbackList.length ? callbackList.shift() : function() {
 				setTimeout(function() {
@@ -247,7 +242,6 @@ define([
 			document.querySelector('.accordion-extensions').innerHTML = accordionHtml;
 
 			// Create extension buttons
-			logger.log("onCreateButton");
 			var onCreateButtonListenerList = getExtensionListenerList("onCreateButton");
 			var extensionButtonsFragment = document.createDocumentFragment();
 			_.each(onCreateButtonListenerList, function(listener) {
@@ -257,7 +251,6 @@ define([
 		}
 
 		// Create extension preview buttons
-		logger.log("onCreatePreviewButton");
 		var onCreatePreviewButtonListenerList = getExtensionListenerList("onCreatePreviewButton");
 		var extensionPreviewButtonsFragment = document.createDocumentFragment();
 		_.each(onCreatePreviewButtonListenerList, function(listener) {

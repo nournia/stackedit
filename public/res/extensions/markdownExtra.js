@@ -3,13 +3,12 @@ define([
 	"jquery",
 	"underscore",
 	"utils",
-	"logger",
 	"classes/Extension",
 	'google-code-prettify',
 	'highlightjs',
 	'crel',
 	'pagedownExtra'
-], function($, _, utils, logger, Extension, prettify, hljs) {
+], function($, _, utils, Extension, prettify, hljs) {
 
 	var markdownExtra = new Extension("markdownExtra", "Markdown Extra", true);
 	markdownExtra.settingsBlock = '';
