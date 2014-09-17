@@ -8,11 +8,11 @@ define([
 	"settings",
 	"eventMgr",
 	"fileSystem",
-	"classes/FileDescriptor",
-	"text!WELCOME.md"
-], function($, _, constants, core, utils, storage, settings, eventMgr, fileSystem, FileDescriptor, welcomeContent) {
+	"classes/FileDescriptor"
+], function($, _, constants, core, utils, storage, settings, eventMgr, fileSystem, FileDescriptor) {
 
 	var fileMgr = {};
+	welcomeContent = 'Welcome **simple** StackEdit !'
 
 	// Defines the current file
 	fileMgr.currentFile = undefined;

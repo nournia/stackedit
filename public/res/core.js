@@ -10,10 +10,9 @@ define([
 	"storage",
 	"settings",
 	"eventMgr",
-	"text!html/bodyEditor.html",
 	"storage",
 	'pagedown'
-], function($, _, crel, editor, layout, constants, utils, storage, settings, eventMgr, bodyEditorHTML) {
+], function($, _, crel, editor, layout, constants, utils, storage, settings, eventMgr) {
 
 	var core = {};
 
@@ -282,8 +281,6 @@ define([
 	core.onReady = function() {
 		// Add RTL class
 		document.body.className += ' ' + settings.editMode;
-
-		document.body.innerHTML = bodyEditorHTML;
 
 		// Initialize utils library
 		utils.init();
