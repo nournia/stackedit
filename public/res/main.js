@@ -43,9 +43,6 @@ requirejs.config({
 		pagedown: 'libs/Markdown.Editor',
 		'require-css': 'bower-libs/require-css/css',
 		xregexp: 'bower-libs/xregexp/xregexp-all',
-		yaml: 'bower-libs/yaml.js/bin/yaml',
-		'yaml.js': 'bower-libs/yaml.js',
-		'yaml-js': 'bower-libs/yaml.js/bin/yaml',
 		css: 'bower-libs/require-css/css',
 		'css-builder': 'bower-libs/require-css/css-builder',
 		normalize: 'bower-libs/require-css/normalize',
@@ -81,9 +78,6 @@ requirejs.config({
 		],
 		mousetrap: {
 			exports: 'Mousetrap'
-		},
-		'yaml-js': {
-			exports: 'YAML'
 		},
 		'prism-core': {
 			exports: 'Prism'
