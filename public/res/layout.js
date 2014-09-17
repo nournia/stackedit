@@ -6,9 +6,8 @@ define([
 	'settings',
 	'eventMgr',
 	'crel',
-	'mousetrap',
-	'hammerjs'
-], function($, _, utils, constants, settings, eventMgr, crel, mousetrap, hammer) {
+	'mousetrap'
+], function($, _, utils, constants, settings, eventMgr, crel, mousetrap) {
 	var layout = {};
 
 	var resizerSize = 32;
@@ -161,19 +160,6 @@ define([
 			startAnimation();
 			resizeAll();
 		};
-	};
-	DomObject.prototype.initHammer = function(drag) {
-		this.hammer = hammer(this.elt, {
-			drag: drag ? true : false,
-			drag_max_touches: 0,
-			gesture: false,
-			hold: false,
-			release: false,
-			swipe: drag ? false : true,
-			tap: false,
-			touch: false,
-			transform: false
-		});
 	};
 
 	var maxWidthMap = [
@@ -519,47 +505,8 @@ define([
 			menuPanel.$elt.on('hidden.layout.toggle', function() {
 				isModalShown || editor.elt.focus();
 			});
-
-			// Gesture
-
-			/*
-			navbar.initHammer();
-			menuPanel.initHammer();
-			documentPanel.initHammer();
-			previewButtons.initHammer();
-
-			navbar.hammer.on('swiperight', _.bind(menuPanel.toggle, menuPanel, true));
-			navbar.hammer.on('swipeleft', _.bind(documentPanel.toggle, documentPanel, true));
-			navbar.hammer.on('swipeup', _.bind(navbar.toggle, navbar, false));
-
-			menuPanel.hammer.on('swiperight', _.bind(menuPanel.toggle, menuPanel, true));
-			menuPanel.hammer.on('swipeleft', _.bind(menuPanel.toggle, menuPanel, false));
-
-			documentPanel.hammer.on('swipeleft', _.bind(documentPanel.toggle, documentPanel, true));
-			documentPanel.hammer.on('swiperight', _.bind(documentPanel.toggle, documentPanel, false));
-			*/
-
-			previewResizer.initHammer(true);
-			var resizerInitialSize;
-			previewResizer.hammer.on('dragstart', function() {
-				resizerInitialSize = {
-					width: previewPanel.width,
-					height: previewPanel.height
-				};
-			}).on('drag', function(evt) {
-				if(isVertical) {
-					previewPanel.height = resizerInitialSize.height - evt.gesture.deltaY;
-				}
-				else {
-					previewPanel.width = resizerInitialSize.width - evt.gesture.deltaX;
-				}
-				evt.gesture.preventDefault();
-				previewPanel.halfSize = false;
-				resizeAll();
-			});
 		}
 
-		previewButtons.initHammer(true);
 		previewButtons.adjustPosition = function() {
 			if(!previewButtons.isDragged) {
 				return;
@@ -572,27 +519,6 @@ define([
 			this.y > 0 && (this.y = 0);
 			this.applyCss();
 		};
-
-
-		var buttonsInitialCoord;
-		previewButtons.hammer.on('dragstart', function() {
-			previewButtons.isOpen = true;
-			previewButtons.isDragged = true;
-			previewButtons.$elt.removeClass('closed animate');
-			wrapperL2.$elt.addClass('dragging');
-			buttonsInitialCoord = {
-				x: previewButtons.x,
-				y: previewButtons.y
-			};
-		}).on('drag', function(evt) {
-			previewButtons.x = buttonsInitialCoord.x + evt.gesture.deltaX;
-			previewButtons.y = buttonsInitialCoord.y + evt.gesture.deltaY;
-			previewButtons.adjustPosition();
-			evt.gesture.preventDefault();
-		}).on('dragend', function() {
-			wrapperL2.$elt.removeClass('dragging');
-			previewButtons.$elt.find('.btn-group').toggleClass('dropup', windowSize.height / 2 > -previewButtons.y);
-		});
 
 		// Configure Mousetrap
 		mousetrap.stopCallback = function() {

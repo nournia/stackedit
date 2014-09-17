@@ -43,7 +43,6 @@ requirejs.config({
 		diff_match_patch: 'bower-libs/google-diff-match-patch-js/diff_match_patch',
 		diff_match_patch_uncompressed: 'bower-libs/google-diff-match-patch-js/diff_match_patch_uncompressed',
 		jsondiffpatch: 'bower-libs/jsondiffpatch/build/bundle',
-		hammerjs: 'bower-libs/hammerjs/hammer',
 		waitForImages: 'bower-libs/waitForImages/dist/jquery.waitforimages'
 	},
 	shim: {
