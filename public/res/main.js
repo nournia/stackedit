@@ -23,7 +23,6 @@ requirejs.config({
 		'mousetrap-record': 'bower-libs/mousetrap/plugins/record/mousetrap-record',
 		toMarkdown: 'bower-libs/to-markdown/src/to-markdown',
 		text: 'bower-libs/requirejs-text/text',
-		mathjax: '../res/bower-libs/MathJax/MathJax.js?config=TeX-AMS_HTML',
 		bootstrap: 'bower-libs/bootstrap/dist/js/bootstrap',
 		requirejs: 'bower-libs/requirejs/require',
 		'google-code-prettify': 'bower-libs/google-code-prettify/src/prettify',
@@ -70,9 +69,6 @@ requirejs.config({
 		underscore: {
 			exports: '_'
 		},
-		mathjax: [
-			'libs/mathjax_init'
-		],
 		jgrowl: {
 			deps: [
 				'jquery'

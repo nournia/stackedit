@@ -11,7 +11,6 @@ define([
 	"extensions/markdownSectionParser",
 	"extensions/partialRendering",
 	"extensions/markdownExtra",
-	"extensions/mathJax",
 	"extensions/shortcuts",
 	"bootstrap",
 	"jquery-waitforimages"
