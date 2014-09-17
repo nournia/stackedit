@@ -18,7 +18,6 @@ requirejs.config({
 		jquery: 'bower-libs/jquery/jquery',
 		underscore: 'bower-libs/underscore/underscore',
 		crel: 'bower-libs/crel/crel',
-		jgrowl: 'bower-libs/jgrowl/jquery.jgrowl',
 		mousetrap: 'bower-libs/mousetrap/mousetrap',
 		'mousetrap-record': 'bower-libs/mousetrap/plugins/record/mousetrap-record',
 		toMarkdown: 'bower-libs/to-markdown/src/to-markdown',
@@ -38,7 +37,6 @@ requirejs.config({
 		FileSaver: 'bower-libs/FileSaver/FileSaver',
 		stacktrace: 'bower-libs/stacktrace/stacktrace',
 		'requirejs-text': 'bower-libs/requirejs-text/text',
-		'bootstrap-tour': 'bower-libs/bootstrap-tour/build/js/bootstrap-tour',
 		css_browser_selector: 'bower-libs/css_browser_selector/css_browser_selector',
 		'pagedown-extra': 'bower-libs/pagedown-extra/node-pagedown-extra',
 		pagedownExtra: 'bower-libs/pagedown-extra/Markdown.Extra',
@@ -68,12 +66,6 @@ requirejs.config({
 	shim: {
 		underscore: {
 			exports: '_'
-		},
-		jgrowl: {
-			deps: [
-				'jquery'
-			],
-			exports: 'jQuery.jGrowl'
 		},
 		diff_match_patch_uncompressed: {
 			exports: 'diff_match_patch'
@@ -126,12 +118,6 @@ requirejs.config({
 		],
 		highlightjs: {
 			exports: 'hljs'
-		},
-		'bootstrap-tour': {
-			deps: [
-				'bootstrap'
-			],
-			exports: 'Tour'
 		},
 		bootstrap: [
 			'jquery'

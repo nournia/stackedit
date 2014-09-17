@@ -1,6 +1,4 @@
 @import "base.less";
-@import "../bower-libs/bootstrap-tour/src/less/bootstrap-tour.less";
-@import (less) "jquery.jgrowl.css";
 
 /* Colors */
 @logo-yellow: #ffe600;
@@ -1531,33 +1529,6 @@ input[type="file"] {
 	}
 	&.bottom .arrow:after {
 		top: 2px;
-	}
-}
-
-
-
-/********************
- * jGrowl
- ********************/
-
-div.jGrowl {
-	z-index: 1040;
-	font-size: 14px;
-	&.bottom-right {
-	    right: 35px;
-	}
-	div.jGrowl-notification, div.jGrowl-closer {
-		background-color: @jgrowl-bg-color;
-		width: @jgrowl-width;
-		margin: 10px 0;
-		padding: 10px 12px;
-		-ms-filter: none;
-		filter: none;
-		border-radius: 4px;
-		font-family: @font-family-base;
-	}
-	div.jGrowl-notification {
-		min-height: 65px;
 	}
 }
 
