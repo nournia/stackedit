@@ -203,8 +203,6 @@ require([
 	"rangy",
 	"core",
 	"eventMgr",
-	"synchronizer",
-	"publisher",
 	"mediaImporter",
 	"css",
 	"rangy-cssclassapplier",
