@@ -98,10 +98,6 @@ catch(e) {
 // Viewer mode is deduced from the body class
 window.viewerMode = /(^| )viewer($| )/.test(document.body.className);
 
-// Keep the theme in a global variable
-window.theme = localStorage.themeV4 || 'default';
-var themeModule = "less!themes/" + window.theme;
-
 require([
 	"jquery",
 	"rangy",
@@ -110,7 +106,7 @@ require([
 	"constants",
 	"classes/Provider",
 	"rangy-cssclassapplier",
-	themeModule
+	"less!styles/main"
 ], function($, rangy, core, eventMgr) {
 
 	if(window.noStart) {
