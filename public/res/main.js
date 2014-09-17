@@ -48,8 +48,6 @@ requirejs.config({
 		normalize: 'bower-libs/require-css/normalize',
 		prism: 'bower-libs/prism/prism',
 		'prism-core': 'bower-libs/prism/components/prism-core',
-		MutationObservers: 'bower-libs/MutationObservers/MutationObserver',
-		WeakMap: 'bower-libs/WeakMap/weakmap',
 		rangy: 'bower-libs/rangy/rangy-core',
 		'rangy-cssclassapplier': 'bower-libs/rangy/rangy-cssclassapplier',
 		diff_match_patch: 'bower-libs/google-diff-match-patch-js/diff_match_patch',
@@ -107,9 +105,6 @@ requirejs.config({
 		FileSaver: {
 			exports: 'saveAs'
 		},
-		MutationObservers: [
-			'WeakMap'
-		],
 		highlightjs: {
 			exports: 'hljs'
 		},
