@@ -7,7 +7,6 @@ define([
 	"classes/Extension",
 	"settings",
 	"extensions/markdownSectionParser",
-	"extensions/partialRendering",
 	"extensions/markdownExtra",
 	"extensions/shortcuts",
 	"bootstrap"

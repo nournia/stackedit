@@ -1,10 +1,9 @@
 define([
     "underscore",
     "extensions/markdownExtra",
-    "extensions/partialRendering",
     "classes/Extension",
     "crel",
-], function(_, markdownExtra, partialRendering, Extension, crel) {
+], function(_, markdownExtra, Extension, crel) {
 
     var markdownSectionParser = new Extension("markdownSectionParser", "Markdown section parser");
 
@@ -29,44 +28,6 @@ define([
         regexp = new RegExp(regexp, 'gm');
 
         var converter = editor.getConverter();
-        if(!partialRendering.enabled) {
-            converter.hooks.chain("preConversion", function() {
-                return _.reduce(sectionList, function(result, section) {
-                    return result + '\n<div class="se-preview-section-delimiter"></div>\n\n' + section.text + '\n\n';
-                }, '');
-            });
-
-            editor.hooks.chain("onPreviewRefresh", function() {
-                var wmdPreviewElt = document.getElementById("wmd-preview");
-                var childNode = wmdPreviewElt.firstChild;
-                function createSectionElt() {
-                    var sectionElt = crel('div', {
-                        class: 'wmd-preview-section preview-content'
-                    });
-                    var isNextDelimiter = false;
-                    while (childNode) {
-                        var nextNode = childNode.nextSibling;
-                        var isDelimiter = childNode.className == 'se-preview-section-delimiter';
-                        if(isNextDelimiter === true && childNode.tagName == 'DIV' && isDelimiter) {
-                            // Stop when encountered the next delimiter
-                            break;
-                        }
-                        isNextDelimiter = true;
-                        isDelimiter || sectionElt.appendChild(childNode);
-                        childNode = nextNode;
-                    }
-                    return sectionElt;
-                }
-
-                var newSectionEltList = document.createDocumentFragment();
-                sectionList.forEach(function(section) {
-                    newSectionEltList.appendChild(createSectionElt(section));
-                });
-                previewContentsElt.innerHTML = '';
-                previewContentsElt.appendChild(wmdPreviewElt);
-                previewContentsElt.appendChild(newSectionEltList);
-            });
-        }
     };
 
     markdownSectionParser.onReady = function() {
