@@ -11,12 +11,9 @@ define([
 	"settings",
 	"eventMgr",
 	"text!html/bodyEditor.html",
-	"text!html/bodyViewer.html",
-	"text!html/tooltipSettingsTemplate.html",
-	"text!html/tooltipSettingsPdfOptions.html",
 	"storage",
 	'pagedown'
-], function($, _, crel, editor, layout, constants, utils, storage, settings, eventMgr, bodyEditorHTML, bodyViewerHTML, settingsTemplateTooltipHTML, settingsPdfOptionsTooltipHTML) {
+], function($, _, crel, editor, layout, constants, utils, storage, settings, eventMgr, bodyEditorHTML) {
 
 	var core = {};
 
@@ -286,12 +283,7 @@ define([
 		// Add RTL class
 		document.body.className += ' ' + settings.editMode;
 
-		if(window.viewerMode === true) {
-			document.body.innerHTML = bodyViewerHTML;
-		}
-		else {
-			document.body.innerHTML = bodyEditorHTML;
-		}
+		document.body.innerHTML = bodyEditorHTML;
 
 		// Initialize utils library
 		utils.init();
@@ -502,8 +494,6 @@ define([
 			'Thanks for supporting StackEdit by adding a backlink in your documents!<br/><br/>',
 			'<b class="text-danger">NOTE: Backlinks in Stack Exchange Q/A are not welcome.</b>'
 		].join(''));
-		utils.createTooltip(".tooltip-template", settingsTemplateTooltipHTML);
-		utils.createTooltip(".tooltip-pdf-options", settingsPdfOptionsTooltipHTML);
 
 		// Avoid dropdown panels to close on click
 		$("div.dropdown-menu").click(function(e) {

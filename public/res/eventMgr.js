@@ -7,13 +7,12 @@ define([
 	"logger",
 	"classes/Extension",
 	"settings",
-	"text!html/settingsExtensionsAccordion.html",
 	"extensions/markdownSectionParser",
 	"extensions/partialRendering",
 	"extensions/markdownExtra",
 	"extensions/shortcuts",
 	"bootstrap"
-], function($, _, crel, mousetrap, utils, logger, Extension, settings, settingsExtensionsAccordionHTML) {
+], function($, _, crel, mousetrap, utils, logger, Extension, settings) {
 
 	var eventMgr = {};
 
@@ -243,12 +242,7 @@ define([
 			var accordionHtml = _.chain(extensionList).sortBy(function(extension) {
 				return extension.extensionName.toLowerCase();
 			}).reduce(function(html, extension) {
-				return html + (extension.settingsBlock ? _.template(settingsExtensionsAccordionHTML, {
-					extensionId: extension.extensionId,
-					extensionName: extension.extensionName,
-					isOptional: extension.isOptional,
-					settingsBlock: extension.settingsBlock
-				}) : "");
+				return html;
 			}, "").value();
 			document.querySelector('.accordion-extensions').innerHTML = accordionHtml;
 

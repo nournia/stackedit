@@ -5,15 +5,14 @@ define([
 	"utils",
 	"logger",
 	"classes/Extension",
-	"text!html/markdownExtraSettingsBlock.html",
 	'google-code-prettify',
 	'highlightjs',
 	'crel',
 	'pagedownExtra'
-], function($, _, utils, logger, Extension, markdownExtraSettingsBlockHTML, prettify, hljs) {
+], function($, _, utils, logger, Extension, prettify, hljs) {
 
 	var markdownExtra = new Extension("markdownExtra", "Markdown Extra", true);
-	markdownExtra.settingsBlock = markdownExtraSettingsBlockHTML;
+	markdownExtra.settingsBlock = '';
 	markdownExtra.defaultConfig = {
 		extensions: [
 			"fenced_code_gfm",

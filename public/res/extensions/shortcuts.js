@@ -4,13 +4,11 @@ define([
 	"utils",
 	"mousetrap",
 	"classes/Extension",
-	"text!extensions/shortcutsDefaultMapping.settings",
-	"text!html/shortcutsSettingsBlock.html",
-	"text!html/tooltipSettingsShortcutsExtension.html"
-], function($, _, utils, mousetrap, Extension, shortcutsDefaultMapping, shortcutsSettingsBlockHTML, tooltipSettingsShortcutsExtensionHTML) {
+	"text!extensions/shortcutsDefaultMapping.settings"
+], function($, _, utils, mousetrap, Extension, shortcutsDefaultMapping) {
 
 	var shortcuts = new Extension("shortcuts", "Shortcuts", true, true);
-	shortcuts.settingsBlock = shortcutsSettingsBlockHTML;
+	shortcuts.settingsBlock = '';
 	shortcuts.defaultConfig = {
 		mapping: shortcutsDefaultMapping
 	};
@@ -68,10 +66,6 @@ define([
 		catch(e) {
 			console.error(e);
 		}
-	};
-
-	shortcuts.onReady = function() {
-		utils.createTooltip(".tooltip-shortcuts-extension", tooltipSettingsShortcutsExtensionHTML);
 	};
 
 	return shortcuts;
