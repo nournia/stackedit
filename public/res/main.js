@@ -17,8 +17,6 @@ requirejs.config({
 		bootstrap: 'bower-libs/bootstrap/dist/js/bootstrap',
 		requirejs: 'bower-libs/requirejs/require',
 		highlightjs: 'libs/highlight/highlight.pack',
-		'pagedown-extra': 'bower-libs/pagedown-extra/node-pagedown-extra',
-		pagedownExtra: 'bower-libs/pagedown-extra/Markdown.Extra',
 		pagedown: 'libs/Markdown.Editor',
 		prism: 'bower-libs/prism/prism',
 		'prism-core': 'bower-libs/prism/components/prism-core',
@@ -67,9 +65,6 @@ requirejs.config({
 			'jquery'
 		],
 		pagedown: [
-			'libs/Markdown.Converter'
-		],
-		pagedownExtra: [
 			'libs/Markdown.Converter'
 		]
 	}
