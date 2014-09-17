@@ -66,19 +66,11 @@ define([
 		});
 	}
 
-	/*jshint unused:true */
 	shortcuts.onInit = function() {
-		try {
-			/*jshint evil: true */
-			var shortcutMap;
-			eval('shortcutMap = ' + shortcuts.config.mapping);
-			_.each(shortcutMap, function(func, shortcut) {
-				mousetrap.bind(shortcut, func);
-			});
-		}
-		catch(e) {
-			console.error(e);
-		}
+		var shortcutMap = shortcuts.config.mapping;
+		_.each(shortcutMap, function(func, shortcut) {
+			mousetrap.bind(shortcut, func);
+		});
 	};
 
 	return shortcuts;
