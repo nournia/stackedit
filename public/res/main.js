@@ -31,7 +31,6 @@ requirejs.config({
 		pagedownExtra: 'bower-libs/pagedown-extra/Markdown.Extra',
 		pagedown: 'libs/Markdown.Editor',
 		'require-css': 'bower-libs/require-css/css',
-		xregexp: 'bower-libs/xregexp/xregexp-all',
 		css: 'bower-libs/require-css/css',
 		'css-builder': 'bower-libs/require-css/css-builder',
 		normalize: 'bower-libs/require-css/normalize',

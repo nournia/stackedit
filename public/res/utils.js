@@ -2,9 +2,8 @@ define([
 	"jquery",
 	"underscore",
 	"storage",
-	"crel",
-	"xregexp"
-], function($, _, storage, crel, XRegExp) {
+	"crel"
+], function($, _, storage, crel) {
 
 	var utils = {};
 
@@ -272,10 +271,8 @@ define([
 	};
 
 	// Slug function
-	var nonWordChars = XRegExp('[^\\p{L}\\p{N}-]', 'g');
 	utils.slugify = function(text) {
 		return text.toLowerCase().replace(/\s/g, '-') // Replace spaces with -
-			.replace(nonWordChars, '') // Remove all non-word chars
 			.replace(/\-\-+/g, '-') // Replace multiple - with single -
 			.replace(/^-+/, '') // Trim - from start of text
 			.replace(/-+$/, ''); // Trim - from end of text
