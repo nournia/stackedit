@@ -3,11 +3,10 @@ define([
     'utils',
     'settings',
     'eventMgr',
-    'fileMgr',
     'editor',
     'diff_match_patch_uncompressed',
     'jsondiffpatch'
-], function(_, utils, settings, eventMgr, fileMgr, editor, diff_match_patch, jsondiffpatch) {
+], function(_, utils, settings, eventMgr, editor, diff_match_patch, jsondiffpatch) {
 
     function Provider(providerId, providerName) {
         this.providerId = providerId;
@@ -204,7 +203,6 @@ define([
             (titleConflict && syncAttributes.title === undefined) ||
             (discussionListConflict && syncAttributes.discussionList === undefined)
         ) {
-            fileMgr.createFile(localTitle + " (backup)", localContent, localDiscussionListJSON);
             eventMgr.onMessage('Conflict detected on "' + localTitle + '". A backup has been created locally.');
         }
         else {
@@ -275,14 +273,6 @@ define([
         if(contentChanged) {
             var localDiscussionArray = [];
             // Adjust editor's cursor position and local discussions at the same time
-            if(fileMgr.currentFile === fileDesc) {
-                editorSelection = {
-                    selectionStart: editor.selectionMgr.selectionStart,
-                    selectionEnd: editor.selectionMgr.selectionEnd
-                };
-                localDiscussionArray.push(editorSelection);
-                fileDesc.newDiscussion && localDiscussionArray.push(fileDesc.newDiscussion);
-            }
             if(adjustLocalDiscussionList) {
                 localDiscussionArray = localDiscussionArray.concat(_.values(localDiscussionList));
             }
@@ -330,13 +320,6 @@ define([
         if(contentChanged || discussionListChanged) {
             editor.watcher.noWatch(_.bind(function() {
                 if(contentChanged) {
-                    if(fileMgr.currentFile === fileDesc) {
-                        editor.setValueNoWatch(newContent);
-                        editorSelection && editor.selectionMgr.setSelectionStartEnd(
-                            editorSelection.selectionStart,
-                            editorSelection.selectionEnd
-                        );
-                    }
                     fileDesc.content = newContent;
                     eventMgr.onContentChanged(fileDesc, newContent);
                 }
