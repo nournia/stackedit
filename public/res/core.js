@@ -4,7 +4,6 @@ define([
 	"underscore",
 	"crel",
 	"editor",
-	"layout",
 	"constants",
 	"utils",
 	"storage",
@@ -12,7 +11,7 @@ define([
 	"eventMgr",
 	"storage",
 	'pagedown'
-], function($, _, crel, editor, layout, constants, utils, storage, settings, eventMgr) {
+], function($, _, crel, editor, constants, utils, storage, settings, eventMgr) {
 
 	var core = {};
 
@@ -295,7 +294,6 @@ define([
 		// Detect user activity
 		$(document).mousemove(setUserActive).keypress(setUserActive);
 
-		layout.init();
 		editor.init();
 
 		// Do periodic tasks
