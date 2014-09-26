@@ -16,19 +16,19 @@ define([
 	var titleMinWidth = 200;
 	var windowSize;
 
-	var wrapperL1, wrapperL2, wrapperL3;
+	var wrapper;
 	var navbar, editor;
 
 	var animate = false;
 
 	function startAnimation() {
 		animate = true;
-		wrapperL1.$elt.addClass('layout-animate');
+		wrapper.$elt.addClass('layout-animate');
 	}
 
 	function endAnimation() {
 		animate = false;
-		wrapperL1.$elt.removeClass('layout-animate');
+		wrapper.$elt.removeClass('layout-animate');
 	}
 
 	function DomObject(selector) {
@@ -40,20 +40,6 @@ define([
 	var transitionEndTimeoutId;
 	var transitionEndCallbacks = [];
 
-	function onTransitionEnd(evt) {
-		if(!evt ||
-			evt.target === wrapperL1.elt ||
-			evt.target === wrapperL2.elt
-			) {
-			transitionEndCallbacks.forEach(function(callback) {
-				callback();
-			});
-			endAnimation();
-			transitionEndCallbacks.length !== 0 && onResize();
-			transitionEndCallbacks = [];
-		}
-	}
-
 	DomObject.prototype.applyCss = function() {
 
 		// Top/left/Bottom/Right
@@ -61,15 +47,6 @@ define([
 		this.left !== undefined && (this.elt.style.left = this.left + 'px');
 		this.bottom !== undefined && (this.elt.style.bottom = this.bottom + 'px');
 		this.right !== undefined && (this.elt.style.right = this.right + 'px');
-
-		// Translate
-		if(this.x !== undefined || this.y !== undefined) {
-			this.x = this.x || 0;
-			this.y = this.y || 0;
-			this.elt.style['-webkit-transform'] = 'translate(' + this.x + 'px, ' + this.y + 'px)';
-			this.elt.style['-ms-transform'] = 'translate(' + this.x + 'px, ' + this.y + 'px)';
-			this.elt.style.transform = 'translate(' + this.x + 'px, ' + this.y + 'px)';
-		}
 
 		// Width (deferred when animate if new width is smaller)
 		if(animate && this.width < this.oldWidth) {
@@ -92,10 +69,6 @@ define([
 			this.height !== undefined && (this.elt.style.height = this.height + 'px');
 		}
 		this.oldHeight = this.height;
-
-		// Just in case transitionEnd event doesn't happen
-		clearTimeout(transitionEndTimeoutId);
-		animate && (transitionEndTimeoutId = setTimeout(onTransitionEnd, 800));
 	};
 
 	var maxWidthMap = [
@@ -161,8 +134,8 @@ define([
 
 	function fixViewportScrolling() {
 		// Fix a weird viewport behavior using pageup/pagedown in Webkit
-		wrapperL1.width = windowSize.width;
-		wrapperL1.elt.style.width = wrapperL1.width + 'px';
+		wrapper.width = windowSize.width;
+		wrapper.elt.style.width = wrapper.width + 'px';
 	}
 
 	function resizeAll() {
@@ -173,37 +146,25 @@ define([
 
 		while(true) {
 			// Layout wrapper level 1
-			wrapperL1.y = navbar.isOpen ? 0 : -navbarHeight;
-			wrapperL1.x = 0;
-			wrapperL1.width = windowSize.width;
-			wrapperL1.height = windowSize.height - wrapperL1.y;
+			wrapper.y = navbar.isOpen ? 0 : -navbarHeight;
+			wrapper.x = 0;
+			wrapper.width = windowSize.width;
+			wrapper.height = windowSize.height - wrapper.y;
 
-			// Layout wrapper level 2
-			wrapperL2.left = 0;
-			wrapperL2.width = windowSize.width;
-			wrapperL2.height = wrapperL1.height;
-
-			// Layout wrapper level 3
-			wrapperL3.top = navbarHeight;
-			wrapperL3.width = windowSize.width;
-			wrapperL3.height = wrapperL1.height - navbarHeight;
-
-			wrapperL1.applyCss();
-			wrapperL2.applyCss();
-			wrapperL3.applyCss();
+			wrapper.applyCss();
 
 			if(window.viewerMode) {
 				return onResize();
 			}
 
-			if(navbar.isOpen && wrapperL3.height < editorMinSize.height + resizerSize) {
+			if(navbar.isOpen) {
 				navbar.isOpen = false;
 				navbar.$elt.trigger('hide.layout.toggle').trigger('hidden.layout.toggle');
 				continue;
 			}
 
-			editor.height = wrapperL3.height;
-			editor.width = wrapperL3.width;
+			editor.height = wrapper.height;
+			editor.width = wrapper.width;
 			break;
 		}
 
@@ -232,9 +193,7 @@ define([
 		})(document.body.style);
 		document.documentElement.style.overflow = 'hidden';
 
-		wrapperL1 = new DomObject('.layout-wrapper-l1');
-		wrapperL2 = new DomObject('.layout-wrapper-l2');
-		wrapperL3 = new DomObject('.layout-wrapper-l3');
+		wrapper = new DomObject('.layout-wrapper');
 		navbar = new DomObject('.navbar');
 		editor = new DomObject('#wmd-input');
 
@@ -247,9 +206,7 @@ define([
 
 		// Fix a weird viewport behavior using pageup/pagedown in Webkit
 		$([
-			wrapperL1.elt,
-			wrapperL2.elt,
-			wrapperL3.elt
+			wrapper.elt
 		]).on('scroll', function() {
 			this.scrollLeft = 0;
 		});
@@ -267,8 +224,7 @@ define([
 			});
 		});
 
-		wrapperL1.$elt.toggleClass('layout-vertical', isVertical);
-		wrapperL1.$elt.on("webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend", onTransitionEnd);
+		wrapper.$elt.toggleClass('layout-vertical', isVertical);
 
 		navbar.isOpen = true;
 
