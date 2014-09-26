@@ -4,9 +4,8 @@ define([
 	'utils',
 	'constants',
 	'eventMgr',
-	'crel',
 	'mousetrap'
-], function($, _, utils, constants, eventMgr, crel, mousetrap) {
+], function($, _, utils, constants, eventMgr, mousetrap) {
 	var layout = {};
 
 	var resizerSize = 32;
@@ -368,17 +367,6 @@ define([
 				'}'
 			].join('\n');
 		}
-
-		applyFont(16);
-		applyFont(17, 600);
-		applyFont(18, 1200);
-
-		// Apply dynamic stylesheet
-		var style = crel('style', {
-			type: 'text/css'
-		});
-		style.innerHTML = styleContent;
-		document.head.appendChild(style);
 
 		resizeAll();
 	};

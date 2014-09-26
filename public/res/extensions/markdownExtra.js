@@ -5,7 +5,6 @@ define([
 	"utils",
 	"classes/Extension",
 	'highlightjs',
-	'crel'
 ], function($, _, utils, Extension, prettify, hljs) {
 
 	var markdownExtra = new Extension("markdownExtra", "Markdown Extra", true);

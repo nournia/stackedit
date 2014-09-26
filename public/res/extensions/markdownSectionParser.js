@@ -1,9 +1,8 @@
 define([
     "underscore",
     "extensions/markdownExtra",
-    "classes/Extension",
-    "crel",
-], function(_, markdownExtra, Extension, crel) {
+    "classes/Extension"
+], function(_, markdownExtra, Extension) {
 
     var markdownSectionParser = new Extension("markdownSectionParser", "Markdown section parser");
 

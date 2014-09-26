@@ -2,7 +2,6 @@
 define([
 	"jquery",
 	"underscore",
-	"crel",
 	"editor",
 	"layout",
 	"constants",
@@ -11,7 +10,7 @@ define([
 	"eventMgr",
 	"storage",
 	'pagedown'
-], function($, _, crel, editor, layout, constants, utils, storage, eventMgr) {
+], function($, _, editor, layout, constants, utils, storage, eventMgr) {
 
 	var core = {};
 
