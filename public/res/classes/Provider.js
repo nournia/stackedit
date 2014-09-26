@@ -1,13 +1,12 @@
 define([
     'underscore',
     'utils',
-    'settings',
     'eventMgr',
     'fileMgr',
     'editor',
     'diff_match_patch_uncompressed',
     'jsondiffpatch'
-], function(_, utils, settings, eventMgr, fileMgr, editor, diff_match_patch, jsondiffpatch) {
+], function(_, utils, eventMgr, fileMgr, editor, diff_match_patch, jsondiffpatch) {
 
     function Provider(providerId, providerName) {
         this.providerId = providerId;
@@ -76,7 +75,7 @@ define([
         }
     });
 
-    var merge = settings.conflictMode == 'merge';
+    var merge = 'merge';
     Provider.prototype.syncMerge = function(fileDesc, syncAttributes, remoteContent, remoteTitle, remoteDiscussionList, remoteDiscussionListJSON) {
 
         function cleanupDiffs(diffs) {

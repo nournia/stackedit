@@ -5,12 +5,11 @@ define([
 	"mousetrap",
 	"utils",
 	"classes/Extension",
-	"settings",
 	"extensions/markdownSectionParser",
 	"extensions/markdownExtra",
 	"extensions/shortcuts",
 	"bootstrap"
-], function($, _, crel, mousetrap, utils, Extension, settings) {
+], function($, _, crel, mousetrap, utils, Extension) {
 
 	var eventMgr = {};
 
@@ -20,7 +19,7 @@ define([
 	}).compact().value();
 
 	// Configure extensions
-	var extensionSettings = settings.extensionSettings || {};
+	var extensionSettings = {};
 	_.each(extensionList, function(extension) {
 		// Set the extension.config attribute from settings or default
 		// configuration
@@ -82,46 +81,6 @@ define([
 
 	// Call every onInit listeners (enabled extensions only)
 	createEventHook("onInit")();
-
-	// Load/Save extension config from/to settings
-	eventMgr.onLoadSettings = function() {
-		_.each(extensionList, function(extension) {
-			var isChecked = !extension.isOptional || extension.config.enabled === undefined || extension.config.enabled === true;
-			utils.setInputChecked("#input-enable-extension-" + extension.extensionId, isChecked);
-			// Special case for Markdown Extra and MathJax
-			if(extension.extensionId == 'markdownExtra') {
-				utils.setInputChecked("#input-settings-markdown-extra", isChecked);
-			}
-			else if(extension.extensionId == 'mathJax') {
-				utils.setInputChecked("#input-settings-mathjax", isChecked);
-			}
-			var onLoadSettingsListener = extension.onLoadSettings;
-			onLoadSettingsListener && onLoadSettingsListener();
-		});
-	};
-	eventMgr.onSaveSettings = function(newExtensionSettings, event) {
-		_.each(extensionList, function(extension) {
-			var newExtensionConfig = _.extend({}, extension.defaultConfig);
-			newExtensionConfig.enabled = utils.getInputChecked("#input-enable-extension-" + extension.extensionId);
-			var isChecked;
-			// Special case for Markdown Extra and MathJax
-			if(extension.extensionId == 'markdownExtra') {
-				isChecked = utils.getInputChecked("#input-settings-markdown-extra");
-				if(isChecked != extension.enabled) {
-					newExtensionConfig.enabled = isChecked;
-				}
-			}
-			else if(extension.extensionId == 'mathJax') {
-				isChecked = utils.getInputChecked("#input-settings-mathjax");
-				if(isChecked != extension.enabled) {
-					newExtensionConfig.enabled = isChecked;
-				}
-			}
-			var onSaveSettingsListener = extension.onSaveSettings;
-			onSaveSettingsListener && onSaveSettingsListener(newExtensionConfig, event);
-			newExtensionSettings[extension.extensionId] = newExtensionConfig;
-		});
-	};
 
 	addEventHook("onMessage");
 	addEventHook("onError");
@@ -230,33 +189,6 @@ define([
 			}
 			return buttonGrpElt;
 		};
-
-		if(window.viewerMode === false) {
-			// Create accordion in settings dialog
-			var accordionHtml = _.chain(extensionList).sortBy(function(extension) {
-				return extension.extensionName.toLowerCase();
-			}).reduce(function(html, extension) {
-				return html;
-			}, "").value();
-			document.querySelector('.accordion-extensions').innerHTML = accordionHtml;
-
-			// Create extension buttons
-			var onCreateButtonListenerList = getExtensionListenerList("onCreateButton");
-			var extensionButtonsFragment = document.createDocumentFragment();
-			_.each(onCreateButtonListenerList, function(listener) {
-				extensionButtonsFragment.appendChild(createBtn(listener));
-			});
-			document.querySelector('.extension-buttons').appendChild(extensionButtonsFragment);
-		}
-
-		// Create extension preview buttons
-		var onCreatePreviewButtonListenerList = getExtensionListenerList("onCreatePreviewButton");
-		var extensionPreviewButtonsFragment = document.createDocumentFragment();
-		_.each(onCreatePreviewButtonListenerList, function(listener) {
-			extensionPreviewButtonsFragment.appendChild(createBtn(listener));
-		});
-		var previewButtonsElt = document.querySelector('.extension-preview-buttons');
-		previewButtonsElt.appendChild(extensionPreviewButtonsFragment);
 
 		// Shall close every popover
 		mousetrap.bind('escape', function() {

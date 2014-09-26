@@ -5,11 +5,10 @@ define([
 	"core",
 	"utils",
 	"storage",
-	"settings",
 	"eventMgr",
 	"fileSystem",
 	"classes/FileDescriptor"
-], function($, _, constants, core, utils, storage, settings, eventMgr, fileSystem, FileDescriptor) {
+], function($, _, constants, core, utils, storage, eventMgr, fileSystem, FileDescriptor) {
 
 	var fileMgr = {};
 	welcomeContent = 'Welcome **simple** StackEdit !'
@@ -51,7 +50,6 @@ define([
 	};
 
 	fileMgr.createFile = function(title, content, discussionListJSON, syncLocations, isTemporary) {
-		content = content !== undefined ? content : settings.defaultContent;
 		if(!title) {
 			// Create a file title
 			title = constants.DEFAULT_FILE_TITLE;

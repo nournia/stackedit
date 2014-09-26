@@ -3,11 +3,10 @@ define([
 	'underscore',
 	'utils',
 	'constants',
-	'settings',
 	'eventMgr',
 	'crel',
 	'mousetrap'
-], function($, _, utils, constants, settings, eventMgr, crel, mousetrap) {
+], function($, _, utils, constants, eventMgr, crel, mousetrap) {
 	var layout = {};
 
 	var resizerSize = 32;
@@ -163,10 +162,10 @@ define([
 	};
 
 	var maxWidthMap = [
-		{ screenWidth: 0, maxWidth: 600 * settings.maxWidthRatio },
-		{ screenWidth: 1000, maxWidth: 700 * settings.maxWidthRatio },
-		{ screenWidth: 1200, maxWidth: 800 * settings.maxWidthRatio },
-		{ screenWidth: 1400, maxWidth: 900 * settings.maxWidthRatio }
+		{ screenWidth: 0, maxWidth: 600 },
+		{ screenWidth: 1000, maxWidth: 700 },
+		{ screenWidth: 1200, maxWidth: 800 },
+		{ screenWidth: 1400, maxWidth: 900 }
 	];
 	var maxWidthMapReversed = maxWidthMap.slice(0).reverse();
 
@@ -244,7 +243,7 @@ define([
 		eventMgr.onLayoutResize();
 	}
 
-	var isVertical = settings.layoutOrientation == "vertical";
+	var isVertical = false;
 
 	function fixViewportScrolling() {
 		// Fix a weird viewport behavior using pageup/pagedown in Webkit
@@ -548,9 +547,9 @@ define([
 			].join('\n');
 		}
 
-		applyFont(16 * settings.fontSizeRatio);
-		applyFont(17 * settings.fontSizeRatio, 600);
-		applyFont(18 * settings.fontSizeRatio, 1200);
+		applyFont(16);
+		applyFont(17, 600);
+		applyFont(18, 1200);
 
 		// Apply dynamic stylesheet
 		var style = crel('style', {

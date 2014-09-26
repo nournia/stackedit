@@ -4,7 +4,6 @@ define([
 	'jquery',
 	'underscore',
 	'utils',
-	'settings',
 	'eventMgr',
 	'prism-core',
 	'diff_match_patch_uncompressed',
@@ -12,7 +11,7 @@ define([
 	'crel',
 	'rangy',
 	'libs/prism-markdown'
-], function($, _, utils, settings, eventMgr, Prism, diff_match_patch, jsondiffpatch, crel, rangy) {
+], function($, _, utils, eventMgr, Prism, diff_match_patch, jsondiffpatch, crel, rangy) {
 
 	var editor = {};
 	var scrollTop = 0;
@@ -34,9 +33,6 @@ define([
 			pagedownEditor.refreshPreview();
 			elapsedTime = Date.now() - startTime;
 		};
-		if(settings.lazyRendering === true) {
-			return _.debounce(refreshPreview, 500);
-		}
 		return function() {
 			clearTimeout(timeoutId);
 			timeoutId = setTimeout(refreshPreview, elapsedTime < 2000 ? elapsedTime : 2000);
@@ -190,7 +186,7 @@ define([
 			}
 			if(adjustScroll) {
 				var adjustTop, adjustBottom;
-				adjustTop = adjustBottom = inputElt.offsetHeight / 2 * settings.cursorFocusRatio;
+				adjustTop = adjustBottom = inputElt.offsetHeight;
 				adjustTop = this.adjustTop || adjustTop;
 				adjustBottom = this.adjustBottom || adjustTop;
 				if(adjustTop && adjustBottom) {
@@ -765,8 +761,6 @@ define([
 		marginElt = inputElt.querySelector('.editor-margin');
 		$marginElt = $(marginElt);
 		previewElt = document.querySelector('.preview-container');
-
-		$inputElt.addClass(settings.editorFontClass);
 
 		watcher.startWatching();
 
