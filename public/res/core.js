@@ -6,11 +6,9 @@ define([
 	"layout",
 	"constants",
 	"utils",
-	"storage",
 	"eventMgr",
-	"storage",
 	'pagedown'
-], function($, _, editor, layout, constants, utils, storage, eventMgr) {
+], function($, _, editor, layout, constants, utils, eventMgr) {
 
 	var core = {};
 
@@ -38,30 +36,6 @@ define([
 			userActive = false;
 		}
 		return userActive && windowUnique;
-	}
-
-	// Used to only have 1 window of the application in the same browser
-	var windowId;
-
-	function checkWindowUnique() {
-		if(isUserReal === false || windowUnique === false) {
-			return;
-		}
-		if(windowId === undefined) {
-			windowId = utils.randomString();
-			storage.frontWindowId = windowId;
-		}
-		var frontWindowId = storage.frontWindowId;
-		if(frontWindowId != windowId) {
-			windowUnique = false;
-			if(intervalId !== undefined) {
-				clearInterval(intervalId);
-			}
-			$(".modal").modal("hide");
-			$('.modal-non-unique').modal("show");
-			// Attempt to close the window
-			window.close();
-		}
 	}
 
 	// Offline management
@@ -199,7 +173,6 @@ define([
 		// Do periodic tasks
 		intervalId = window.setInterval(function() {
 			utils.updateCurrentTime();
-			checkWindowUnique();
 			if(isUserActive() === true || window.viewerMode === true) {
 				eventMgr.onPeriodicRun();
 				checkOnline();

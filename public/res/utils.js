@@ -1,11 +1,11 @@
 define([
 	"jquery",
 	"underscore",
-	"storage",
 	"crel"
-], function($, _, storage, crel) {
+], function($, _, crel) {
 
 	var utils = {};
+	var storage = localStorage;
 
 	utils.msie = (function() {
 		/**

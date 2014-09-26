@@ -1,8 +1,9 @@
 define([
     "underscore",
-    "utils",
-    "storage",
-], function(_, utils, storage) {
+    "utils"
+], function(_, utils) {
+
+    var storage = localStorage;
 
     function FileDescriptor(fileIndex, title) {
         this.fileIndex = fileIndex;
