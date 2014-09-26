@@ -211,14 +211,6 @@ define([
 
 	var $alerts = $();
 
-	function isSponsor(payments) {
-		var result = payments && payments.app == appId && (
-			(payments.chargeOption && payments.chargeOption.alias == 'once') ||
-			(payments.subscriptionOption && payments.subscriptionOption.alias == 'yearly'));
-		eventMgr.isSponsor = result;
-		return result;
-	}
-
 	function removeAlerts() {
 		$alerts.remove();
 		$alerts = $();
@@ -240,8 +232,6 @@ define([
 		}).on('hidden.bs.modal', '.modal', function() {
 			// Focus on the editor when modal is gone
 			editor.focus();
-			// Revert to current theme when settings modal is closed
-			applyTheme(window.theme);
 		}).on('keyup', '.modal', function(e) {
 			// Handle enter key in modals
 			if(e.which == 13 && !$(e.target).is("textarea")) {
@@ -277,12 +267,6 @@ define([
 		$(".action-reset-input").click(function() {
 			utils.resetModalInputs();
 		});
-
-		utils.createTooltip(".tooltip-lazy-rendering", 'Disable preview rendering while typing in order to offload CPU. Refresh preview after 500 ms of inactivity.');
-		utils.createTooltip(".tooltip-default-content", [
-			'Thanks for supporting StackEdit by adding a backlink in your documents!<br/><br/>',
-			'<b class="text-danger">NOTE: Backlinks in Stack Exchange Q/A are not welcome.</b>'
-		].join(''));
 
 		// Avoid dropdown panels to close on click
 		$("div.dropdown-menu").click(function(e) {
