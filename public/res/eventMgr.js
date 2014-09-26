@@ -85,14 +85,11 @@ define([
 	addEventHook("onError");
 	addEventHook("onOfflineChanged");
 	addEventHook("onUserActive");
-	addEventHook("onAsyncRunning");
 	addEventHook("onPeriodicRun");
 
 	// To access modules that are loaded after extensions
 	addEventHook("onEditorCreated");
 	addEventHook("onFileMgrCreated");
-	addEventHook("onSynchronizerCreated");
-	addEventHook("onPublisherCreated");
 	addEventHook("onEventMgrCreated");
 
 	// Operations on files
@@ -106,19 +103,6 @@ define([
 
 	// Operations on folders
 	addEventHook("onFoldersChanged");
-
-	// Sync events
-	addEventHook("onSyncRunning");
-	addEventHook("onSyncSuccess");
-	addEventHook("onSyncImportSuccess");
-	addEventHook("onSyncExportSuccess");
-	addEventHook("onSyncRemoved");
-
-	// Publish events
-	addEventHook("onPublishRunning");
-	addEventHook("onPublishSuccess");
-	addEventHook("onNewPublishSuccess");
-	addEventHook("onPublishRemoved");
 
 	// Operations on Layout
 	addEventHook("onLayoutCreated");
@@ -136,13 +120,6 @@ define([
 	addEventHook("onDiscussionRemoved");
 	addEventHook("onCommentsChanged");
 
-	// Refresh twitter buttons
-	addEventHook("onTweet");
-
-
-	var onPreviewFinished = createEventHook("onPreviewFinished");
-	eventMgr.onAsyncPreview = function() {
-	};
 
 	var onReady = createEventHook("onReady");
 	eventMgr.onReady = function() {

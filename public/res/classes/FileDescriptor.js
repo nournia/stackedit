@@ -4,17 +4,13 @@ define([
     "storage",
 ], function(_, utils, storage) {
 
-    function FileDescriptor(fileIndex, title, syncLocations, publishLocations) {
+    function FileDescriptor(fileIndex, title) {
         this.fileIndex = fileIndex;
         this._title = title || storage[fileIndex + ".title"];
-        this._editorScrollTop = parseInt(storage[fileIndex + ".editorScrollTop"]) || 0;
         this._editorStart = parseInt(storage[fileIndex + ".editorEnd"]) || 0;
         this._editorEnd = parseInt(storage[fileIndex + ".editorEnd"]) || 0;
-        this._previewScrollTop = parseInt(storage[fileIndex + ".previewScrollTop"]) || 0;
         this._selectTime = parseInt(storage[fileIndex + ".selectTime"]) || 0;
         this._discussionList = JSON.parse(storage[fileIndex + ".discussionList"] || '{}');
-        this.syncLocations = syncLocations || {};
-        this.publishLocations = publishLocations || {};
         Object.defineProperty(this, 'title', {
             get: function() {
                 return this._title;
@@ -30,15 +26,6 @@ define([
             },
             set: function(content) {
                 storage[this.fileIndex + ".content"] = content;
-            }
-        });
-        Object.defineProperty(this, 'editorScrollTop', {
-            get: function() {
-                return this._editorScrollTop;
-            },
-            set: function(editorScrollTop) {
-                this._editorScrollTop = editorScrollTop;
-                storage[this.fileIndex + ".editorScrollTop"] = editorScrollTop;
             }
         });
         Object.defineProperty(this, 'editorStart', {
@@ -57,15 +44,6 @@ define([
             set: function(editorEnd) {
                 this._editorEnd = editorEnd;
                 storage[this.fileIndex + ".editorEnd"] = editorEnd;
-            }
-        });
-        Object.defineProperty(this, 'previewScrollTop', {
-            get: function() {
-                return this._previewScrollTop;
-            },
-            set: function(previewScrollTop) {
-                this._previewScrollTop = previewScrollTop;
-                storage[this.fileIndex + ".previewScrollTop"] = previewScrollTop;
             }
         });
         Object.defineProperty(this, 'selectTime', {
@@ -96,50 +74,6 @@ define([
             }
         });
     }
-
-    FileDescriptor.prototype.addSyncLocation = function(syncAttributes) {
-        utils.storeAttributes(syncAttributes);
-        utils.appendIndexToArray(this.fileIndex + ".sync", syncAttributes.syncIndex);
-        this.syncLocations[syncAttributes.syncIndex] = syncAttributes;
-    };
-
-    FileDescriptor.prototype.removeSyncLocation = function(syncAttributes) {
-        utils.removeIndexFromArray(this.fileIndex + ".sync", syncAttributes.syncIndex);
-        delete this.syncLocations[syncAttributes.syncIndex];
-    };
-
-    FileDescriptor.prototype.addPublishLocation = function(publishAttributes) {
-        utils.storeAttributes(publishAttributes);
-        utils.appendIndexToArray(this.fileIndex + ".publish", publishAttributes.publishIndex);
-        this.publishLocations[publishAttributes.publishIndex] = publishAttributes;
-    };
-
-    FileDescriptor.prototype.removePublishLocation = function(publishAttributes) {
-        utils.removeIndexFromArray(this.fileIndex + ".publish", publishAttributes.publishIndex);
-        delete this.publishLocations[publishAttributes.publishIndex];
-    };
-
-    FileDescriptor.prototype.composeTitle = function() {
-        var result = [];
-        _.chain(this.syncLocations).sortBy(function(attributes) {
-            return attributes.provider.providerId;
-        }).each(function(attributes) {
-            result.push('<i class="icon-provider-' + attributes.provider.providerId + '"></i>');
-        });
-        if(_.size(this.syncLocations) !== 0) {
-            result.push('<i class="icon-refresh title-icon-category"></i>');
-        }
-        _.chain(this.publishLocations).sortBy(function(attributes) {
-            return attributes.provider.providerId;
-        }).each(function(attributes) {
-            result.push('<i class="icon-provider-' + attributes.provider.providerId + '"></i>');
-        });
-        if(_.size(this.publishLocations) !== 0) {
-            result.push('<i class="icon-upload title-icon-category"></i>');
-        }
-        result.push(_.escape(this.title));
-        return result.join('');
-    };
 
     return FileDescriptor;
 });

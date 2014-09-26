@@ -150,7 +150,6 @@ define([
 		});
 
 		eventMgr.onPagedownConfigure(pagedownEditor);
-		pagedownEditor.hooks.chain("onPreviewRefresh", eventMgr.onAsyncPreview);
 		pagedownEditor.run();
 		editor.undoMgr.init();
 
