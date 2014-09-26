@@ -6,7 +6,6 @@ define([
 	"utils",
 	"classes/Extension",
 	"extensions/markdownSectionParser",
-	"extensions/markdownExtra",
 	"extensions/shortcuts",
 	"bootstrap"
 ], function($, _, crel, mousetrap, utils, Extension) {

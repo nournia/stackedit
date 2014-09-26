@@ -1,9 +1,9 @@
 define([
     "underscore",
-    "extensions/markdownExtra",
     "classes/Extension"
-], function(_, markdownExtra, Extension) {
+], function(_, Extension) {
 
+    var markdownExtra = new Extension("markdownExtra", "Markdown Extra", true);
     var markdownSectionParser = new Extension("markdownSectionParser", "Markdown section parser");
 
     var eventMgr;
@@ -12,7 +12,6 @@ define([
     };
 
     var sectionList = [];
-    var previewContentsElt;
 
     // Regexp to look for section delimiters
     var regexp = '^.+[ \\t]*\\n=+[ \\t]*\\n+|^.+[ \\t]*\\n-+[ \\t]*\\n+|^\\#{1,6}[ \\t]*.+?[ \\t]*\\#*\\n+'; // Title delimiters
@@ -27,10 +26,6 @@ define([
         regexp = new RegExp(regexp, 'gm');
 
         var converter = editor.getConverter();
-    };
-
-    markdownSectionParser.onReady = function() {
-        previewContentsElt = document.getElementById("preview-contents");
     };
 
     var fileDesc;

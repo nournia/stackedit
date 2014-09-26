@@ -338,24 +338,6 @@ define([
 		};
 
 		$(window).resize(resizeAll);
-
-		var styleContent = '';
-
-		// Apply font
-		function applyFont(size, screenWidth) {
-			screenWidth = screenWidth || 0;
-			styleContent += [
-				'@media (min-width: ' + screenWidth + 'px) {',
-				'#wmd-input {',
-				'   font-size: ' + size + 'px;',
-				'}',
-				'#preview-contents {',
-				'   font-size: ' + size + 'px;',
-				'}',
-				'}'
-			].join('\n');
-		}
-
 		resizeAll();
 	};
 
