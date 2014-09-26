@@ -5,12 +5,12 @@ define([
 	"core",
 	"utils",
 	"eventMgr",
-	"fileSystem",
 	"classes/FileDescriptor"
-], function($, _, constants, core, utils, eventMgr, fileSystem, FileDescriptor) {
+], function($, _, constants, core, utils, eventMgr, FileDescriptor) {
 
 	var storage = localStorage;
 	var fileMgr = {};
+	var fileSystem = {};
 	welcomeContent = 'Welcome **simple** StackEdit !'
 
 	// Defines the current file
