@@ -163,8 +163,6 @@ define([
 				continue;
 			}
 
-			editor.height = wrapper.height;
-			editor.width = wrapper.width;
 			break;
 		}
 
