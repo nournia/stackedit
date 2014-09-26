@@ -97,12 +97,6 @@ define([
 	addEventHook("onCursorCoordinates");
 	addEventHook("onEditorPopover");
 
-	// Operations on comments
-	addEventHook("onDiscussionCreated");
-	addEventHook("onDiscussionRemoved");
-	addEventHook("onCommentsChanged");
-
-
 	var onReady = createEventHook("onReady");
 	eventMgr.onReady = function() {
 		// Shall close every popover

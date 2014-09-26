@@ -464,7 +464,8 @@ define([
 				this.currentMode == 'replace' ||
 				lastMode == 'newlines' ||
 				this.currentMode != lastMode ||
-				currentTime - lastTime > 1000) {
+				currentTime - lastTime > 1000
+				) {
 				undoStack.push(currentState);
 				// Limit the size of the stack
 				while(undoStack.length > 100) {
@@ -481,8 +482,7 @@ define([
 				selectionEndBefore: selectionEndBefore,
 				selectionStartAfter: selectionMgr.selectionStart,
 				selectionEndAfter: selectionMgr.selectionEnd,
-				content: textContent,
-				discussionListJSON: fileDesc.discussionListJSON
+				content: textContent
 			};
 			lastTime = currentTime;
 			lastMode = this.currentMode;
@@ -513,26 +513,6 @@ define([
 				selectionMgr.setSelectionStartEnd(selectionStart, selectionEnd);
 				selectionMgr.updateSelectionRange();
 				selectionMgr.updateCursorCoordinates(true);
-				var discussionListJSON = fileDesc.discussionListJSON;
-				if(discussionListJSON != state.discussionListJSON) {
-					var oldDiscussionList = fileDesc.discussionList;
-					fileDesc.discussionListJSON = state.discussionListJSON;
-					var newDiscussionList = fileDesc.discussionList;
-					var diff = jsonDiffPatch.diff(oldDiscussionList, newDiscussionList);
-					var commentsChanged = false;
-					_.each(diff, function(discussionDiff, discussionIndex) {
-						if(!_.isArray(discussionDiff)) {
-							commentsChanged = true;
-						}
-						else if(discussionDiff.length === 1) {
-							eventMgr.onDiscussionCreated(fileDesc, newDiscussionList[discussionIndex]);
-						}
-						else {
-							eventMgr.onDiscussionRemoved(fileDesc, oldDiscussionList[discussionIndex]);
-						}
-					});
-					commentsChanged && eventMgr.onCommentsChanged(fileDesc);
-				}
 			});
 
 			selectionStartBefore = selectionStart;
@@ -568,8 +548,7 @@ define([
 			currentState = {
 				selectionStartAfter: fileDesc.selectionStart,
 				selectionEndAfter: fileDesc.selectionEnd,
-				content: content,
-				discussionListJSON: fileDesc.discussionListJSON
+				content: content
 			};
 			this.currentMode = undefined;
 			lastMode = undefined;
@@ -581,17 +560,6 @@ define([
 
 	var undoMgr = new UndoMgr();
 	editor.undoMgr = undoMgr;
-
-	function onComment() {
-		if(watcher.isWatching === true) {
-			undoMgr.currentMode = undoMgr.currentMode || 'comment';
-			undoMgr.saveState();
-		}
-	}
-
-	eventMgr.addListener('onDiscussionCreated', onComment);
-	eventMgr.addListener('onDiscussionRemoved', onComment);
-	eventMgr.addListener('onCommentsChanged', onComment);
 
 	var triggerSpellCheck = _.debounce(function() {
 		var selection = window.getSelection();
@@ -629,17 +597,10 @@ define([
 				return;
 			}
 			undoMgr.currentMode = undoMgr.currentMode || 'typing';
-			var discussionList = _.values(fileDesc.discussionList);
-			fileDesc.newDiscussion && discussionList.push(fileDesc.newDiscussion);
-			var updateDiscussionList = adjustCommentOffsets(textContent, newTextContent, discussionList);
 			textContent = newTextContent;
-			if(updateDiscussionList === true) {
-				fileDesc.discussionList = fileDesc.discussionList; // Write discussionList in localStorage
-			}
 			fileDesc.content = textContent;
 			selectionMgr.saveSelectionState();
 			eventMgr.onContentChanged(fileDesc, textContent);
-			updateDiscussionList && eventMgr.onCommentsChanged(fileDesc);
 			undoMgr.saveState();
 			triggerSpellCheck();
 		}
@@ -655,55 +616,6 @@ define([
 			fileChanged = false;
 		}
 	}
-
-	function adjustCommentOffsets(oldTextContent, newTextContent, discussionList) {
-		if(!discussionList.length) {
-			return;
-		}
-		var changes = diffMatchPatch.diff_main(oldTextContent, newTextContent);
-		var changed = false;
-		var startOffset = 0;
-		changes.forEach(function(change) {
-			var changeType = change[0];
-			var changeText = change[1];
-			if(changeType === 0) {
-				startOffset += changeText.length;
-				return;
-			}
-			var endOffset = startOffset;
-			var diffOffset = changeText.length;
-			if(changeType === -1) {
-				endOffset += diffOffset;
-				diffOffset = -diffOffset;
-			}
-			discussionList.forEach(function(discussion) {
-				// selectionEnd
-				if(discussion.selectionEnd > endOffset) {
-					discussion.selectionEnd += diffOffset;
-					discussion.discussionIndex && (changed = true);
-				}
-				else if(discussion.selectionEnd > startOffset) {
-					discussion.selectionEnd = startOffset;
-					discussion.discussionIndex && (changed = true);
-				}
-				// selectionStart
-				if(discussion.selectionStart >= endOffset) {
-					discussion.selectionStart += diffOffset;
-					discussion.discussionIndex && (changed = true);
-				}
-				else if(discussion.selectionStart > startOffset) {
-					discussion.selectionStart = startOffset;
-					discussion.discussionIndex && (changed = true);
-				}
-			});
-			if(changeType === 1) {
-				startOffset += changeText.length;
-			}
-		});
-		return changed;
-	}
-
-	editor.adjustCommentOffsets = adjustCommentOffsets;
 
 	editor.init = function() {
 		inputElt = document.getElementById('wmd-input');
