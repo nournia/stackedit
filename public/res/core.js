@@ -4,74 +4,12 @@ define([
 	"underscore",
 	"editor",
 	"layout",
-	"constants",
 	"utils",
 	"eventMgr",
 	'pagedown'
-], function($, _, editor, layout, constants, utils, eventMgr) {
+], function($, _, editor, layout, utils, eventMgr) {
 
 	var core = {};
-
-	// Used for periodic tasks
-	var intervalId;
-
-	// Used to detect user activity
-	var isUserReal = false;
-	var userActive = false;
-	var windowUnique = true;
-	var userLastActivity = 0;
-
-	function setUserActive() {
-		isUserReal = true;
-		userActive = true;
-		var currentTime = utils.currentTime;
-		if(currentTime > userLastActivity + 1000) {
-			userLastActivity = currentTime;
-			eventMgr.onUserActive();
-		}
-	}
-
-	function isUserActive() {
-		if(utils.currentTime - userLastActivity > constants.USER_IDLE_THRESHOLD) {
-			userActive = false;
-		}
-		return userActive && windowUnique;
-	}
-
-	// Offline management
-	var isOffline = false;
-	var offlineTime = utils.currentTime;
-	core.setOffline = function() {
-		offlineTime = utils.currentTime;
-		if(isOffline === false) {
-			isOffline = true;
-			eventMgr.onOfflineChanged(true);
-		}
-	};
-	function setOnline() {
-		if(isOffline === true) {
-			isOffline = false;
-			eventMgr.onOfflineChanged(false);
-		}
-	}
-
-	function checkOnline() {
-		// Try to reconnect if we are offline but we have some network
-		if(isOffline === true && navigator.onLine === true && offlineTime + constants.CHECK_ONLINE_PERIOD < utils.currentTime) {
-			offlineTime = utils.currentTime;
-			// Try to download anything to test the connection
-			$.ajax({
-				url: "//www.google.com/jsapi",
-				timeout: constants.AJAX_TIMEOUT,
-				dataType: "script"
-			}).done(function() {
-				setOnline();
-			});
-		}
-	}
-
-	// Load settings in settings dialog
-	var $themeInputElt;
 
 	// Create the PageDown editor
 	var pagedownEditor;
@@ -151,43 +89,13 @@ define([
 
 	// Initialize multiple things and then fire eventMgr.onReady
 	core.onReady = function() {
-		// Add RTL class
-		document.body.className += ' rtl';
-
 		// Initialize utils library
 		utils.init();
 
-		// listen to online/offline events
-		$(window).on('offline', core.setOffline);
-		$(window).on('online', setOnline);
-		if(navigator.onLine === false) {
-			core.setOffline();
-		}
-
-		// Detect user activity
-		$(document).mousemove(setUserActive).keypress(setUserActive);
-
 		layout.init();
 		editor.init();
-
-		// Do periodic tasks
-		intervalId = window.setInterval(function() {
-			utils.updateCurrentTime();
-			if(isUserActive() === true || window.viewerMode === true) {
-				eventMgr.onPeriodicRun();
-				checkOnline();
-			}
-		}, 1000);
-
 		eventMgr.onReady();
 	};
-
-	var $alerts = $();
-
-	function removeAlerts() {
-		$alerts.remove();
-		$alerts = $();
-	}
 
 	// Other initialization that are not prioritary
 	eventMgr.addListener("onReady", function() {

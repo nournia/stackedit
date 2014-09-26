@@ -81,11 +81,7 @@ define([
 	// Call every onInit listeners (enabled extensions only)
 	createEventHook("onInit")();
 
-	addEventHook("onMessage");
 	addEventHook("onError");
-	addEventHook("onOfflineChanged");
-	addEventHook("onUserActive");
-	addEventHook("onPeriodicRun");
 
 	// To access modules that are loaded after extensions
 	addEventHook("onEditorCreated");
@@ -96,11 +92,6 @@ define([
 	addEventHook("onFileOpen");
 	addEventHook("onFileClosed");
 	addEventHook("onContentChanged");
-
-	// Operations on Layout
-	addEventHook("onLayoutCreated");
-	addEventHook("onLayoutResize");
-	addEventHook("onExtensionButtonResize");
 
 	// Operations on editor
 	addEventHook("onPagedownConfigure");

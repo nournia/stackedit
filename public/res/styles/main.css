@@ -55,7 +55,7 @@ body {
   word-break: normal;
 }
 #wmd-input > .editor-content {
-  padding-top: 70px;
+  padding: 100px;
 }
 #wmd-input.font-monospaced * {
   line-height: 1.65 !important;

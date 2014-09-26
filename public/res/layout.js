@@ -2,10 +2,8 @@ define([
 	'jquery',
 	'underscore',
 	'utils',
-	'constants',
-	'eventMgr',
 	'mousetrap'
-], function($, _, utils, constants, eventMgr, mousetrap) {
+], function($, _, utils, mousetrap) {
 	var layout = {};
 
 	var resizerSize = 32;
@@ -182,16 +180,6 @@ define([
 	var workingIndicatorWidth = 18 + 70;
 
 	function onResize() {
-		var paddingBottom = wrapperL3.height - 60;
-
-		var editorPadding = (editor.elt.offsetWidth - getMaxWidth()) / 2;
-		if(editorPadding < constants.EDITOR_DEFAULT_PADDING) {
-			editorPadding = constants.EDITOR_DEFAULT_PADDING;
-		}
-		editorContentElt.style.paddingLeft = editorPadding + 'px';
-		editorContentElt.style.paddingRight = editorPadding + 'px';
-		editorContentElt.style.paddingBottom = paddingBottom + 'px';
-
 		var maxWidth = navbarMarginWidth + workingIndicatorWidth + titleMinWidth + buttonsDropdownWidth;
 		if(window.viewerMode) {
 			maxWidth = navbarMarginWidth + workingIndicatorWidth + titleMinWidth + viewerButtonGroupWidth;
@@ -212,8 +200,6 @@ define([
 			maxWidth: titleWidth
 		});
 		$navbarDropdownBtnElt.toggleClass('hide', navbarDropdownElt.children.length === 0);
-
-		eventMgr.onLayoutResize();
 	}
 
 	var isVertical = false;
@@ -341,12 +327,5 @@ define([
 		resizeAll();
 	};
 
-	eventMgr.addListener('onReady', function() {
-		var closeTimeoutId;
-		var dropdownOpen = false;
-
-	});
-
-	eventMgr.onLayoutCreated(layout);
 	return layout;
 });
