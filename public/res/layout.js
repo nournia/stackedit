@@ -16,23 +16,11 @@ define([
 		width: 250,
 		height: 140
 	};
-	var previewMinSize = {
-		width: 330,
-		height: 160
-	};
-	var menuPanelWidth = 280;
-	var documentPanelWidth = 320;
 	var titleMinWidth = 200;
-	var previewButtonsClosedOffset = 18;
-	var previewButtonsDropdownMargin = 130;
-	var previewButtonsOffset = {
-		x: -45,
-		y: -6
-	};
 	var windowSize;
 
 	var wrapperL1, wrapperL2, wrapperL3;
-	var navbar, menuPanel, documentPanel, editor, previewPanel, previewContainer, navbarToggler, previewToggler, previewResizer, previewButtons;
+	var navbar, editor, navbarToggler;
 
 	var animate = false;
 
@@ -58,8 +46,7 @@ define([
 	function onTransitionEnd(evt) {
 		if(!evt ||
 			evt.target === wrapperL1.elt ||
-			evt.target === wrapperL2.elt ||
-			evt.target === previewPanel.elt
+			evt.target === wrapperL2.elt
 			) {
 			transitionEndCallbacks.forEach(function(callback) {
 				callback();
@@ -124,7 +111,6 @@ define([
 			this.isOpen = _.isBoolean(show) ? show : !this.isOpen;
 			if(this.isOpen) {
 				this.isShown = true;
-				this.$elt.addClass('panel-open').trigger('show.layout.toggle');
 				if(backdrop) {
 					$backdropElt = $(utils.createBackdrop(wrapperL1.elt)).on('click.backdrop', _.bind(function() {
 						this.toggle(false);
@@ -150,7 +136,6 @@ define([
 					if(--pushedEvents === 0) {
 						if(!this.isOpen) {
 							this.isShown = false;
-							this.$elt.removeClass('panel-open bring-to-front').trigger('hidden.layout.toggle');
 						}
 					}
 				}, this));
@@ -176,7 +161,6 @@ define([
 	}
 
 	var editorContentElt;
-	var previewContentElt;
 	var editorMarginElt;
 	var navbarInnerElt;
 	var navbarDropdownElt;
@@ -211,14 +195,6 @@ define([
 		editorContentElt.style.paddingBottom = paddingBottom + 'px';
 		editorMarginElt.style.width = editorPadding + 'px';
 
-		var previewPadding = (previewContainer.elt.offsetWidth - getMaxWidth()) / 2;
-		if(previewPadding < constants.EDITOR_DEFAULT_PADDING) {
-			previewPadding = constants.EDITOR_DEFAULT_PADDING;
-		}
-		previewContentElt.style.paddingLeft = previewPadding + 'px';
-		previewContentElt.style.paddingRight = previewPadding + 'px';
-		previewContentElt.style.paddingBottom = paddingBottom + 'px';
-
 		var maxWidth = navbarMarginWidth + workingIndicatorWidth + titleMinWidth + buttonsDropdownWidth;
 		if(window.viewerMode) {
 			maxWidth = navbarMarginWidth + workingIndicatorWidth + titleMinWidth + viewerButtonGroupWidth;
@@ -247,10 +223,8 @@ define([
 
 	function fixViewportScrolling() {
 		// Fix a weird viewport behavior using pageup/pagedown in Webkit
-		wrapperL1.width = windowSize.width + menuPanelWidth + (documentPanel.isShown ? documentPanelWidth : 0);
+		wrapperL1.width = windowSize.width;
 		wrapperL1.elt.style.width = wrapperL1.width + 'px';
-		documentPanel.right = documentPanel.isShown ? 0 : -documentPanelWidth;
-		documentPanel.elt.style.right = documentPanel.right + 'px';
 	}
 
 	function resizeAll() {
@@ -262,12 +236,12 @@ define([
 		while(true) {
 			// Layout wrapper level 1
 			wrapperL1.y = navbar.isOpen ? 0 : -navbarHeight;
-			wrapperL1.x = menuPanel.isOpen ? 0 : documentPanel.isOpen ? -(menuPanelWidth + documentPanelWidth) : -menuPanelWidth;
-			wrapperL1.width = windowSize.width + menuPanelWidth + documentPanelWidth;
+			wrapperL1.x = 0;
+			wrapperL1.width = windowSize.width;
 			wrapperL1.height = windowSize.height - wrapperL1.y;
 
 			// Layout wrapper level 2
-			wrapperL2.left = menuPanelWidth;
+			wrapperL2.left = 0;
 			wrapperL2.width = windowSize.width;
 			wrapperL2.height = wrapperL1.height;
 
@@ -281,13 +255,6 @@ define([
 			wrapperL3.applyCss();
 
 			if(window.viewerMode) {
-				previewPanel.width = wrapperL3.width;
-				previewPanel.height = wrapperL3.height;
-				previewContainer.width = wrapperL3.width;
-				previewContainer.height = wrapperL3.height;
-
-				previewPanel.applyCss();
-				previewContainer.applyCss();
 				return onResize();
 			}
 
@@ -297,90 +264,19 @@ define([
 				continue;
 			}
 
-			if(isVertical) {
-				if(!previewPanel.isOpen) {
-					previewPanel.y = wrapperL3.height - resizerSize;
-				}
-				else {
-					if(previewPanel.halfSize) {
-						previewPanel.height = (wrapperL3.height + resizerSize) / 2;
-					}
-					if(previewPanel.height < previewMinSize.height) {
-						previewPanel.height = previewMinSize.height;
-					}
-					previewPanel.y = wrapperL3.height - previewPanel.height;
-					if(previewPanel.y < editorMinSize.height) {
-						var previewPanelHeight = wrapperL3.height - editorMinSize.height;
-						if(previewPanelHeight < previewMinSize.height) {
-							previewPanel.isOpen = false;
-							previewPanel.$elt.trigger('hide.layout.toggle').trigger('hidden.layout.toggle');
-							continue;
-						}
-						previewPanel.height = previewPanelHeight;
-						previewPanel.y = wrapperL3.height - previewPanel.height;
-					}
-				}
-				previewPanel.width = wrapperL3.width;
-				editor.height = previewPanel.y;
-				editor.width = wrapperL3.width;
-				previewContainer.top = resizerSize;
-				previewContainer.height = previewPanel.height - resizerSize;
-				previewContainer.width = previewPanel.width;
-				navbarToggler.width = togglerSize;
-				previewToggler.width = togglerSize;
-				previewToggler.x = (previewPanel.width - togglerSize) / 2;
-				previewResizer.width = previewContainer.width;
-			}
-			else {
-				if(!previewPanel.isOpen) {
-					previewPanel.x = wrapperL3.width - resizerSize;
-				}
-				else {
-					if(previewPanel.halfSize) {
-						previewPanel.width = (wrapperL3.width + resizerSize) / 2;
-					}
-					if(previewPanel.width < previewMinSize.width) {
-						previewPanel.width = previewMinSize.width;
-					}
-					previewPanel.x = wrapperL3.width - previewPanel.width;
-					if(previewPanel.x < editorMinSize.width) {
-						var previewPanelWidth = wrapperL3.width - editorMinSize.width;
-						if(previewPanelWidth < previewMinSize.width) {
-							previewPanel.isOpen = false;
-							previewPanel.$elt.trigger('hide.layout.toggle').trigger('hidden.layout.toggle');
-							continue;
-						}
-						previewPanel.width = previewPanelWidth;
-						previewPanel.x = wrapperL3.width - previewPanel.width;
-					}
-				}
-				previewPanel.height = wrapperL3.height;
-				editor.width = previewPanel.x;
-				editor.height = wrapperL3.height;
-				previewContainer.left = resizerSize;
-				previewContainer.width = previewPanel.width - resizerSize;
-				previewContainer.height = previewPanel.height;
-				navbarToggler.height = togglerSize;
-				previewToggler.height = togglerSize;
-				previewToggler.y = (previewPanel.height - togglerSize) / 2;
-				previewResizer.height = previewContainer.height;
-			}
+			editor.height = wrapperL3.height;
+			editor.width = wrapperL3.width;
+			navbarToggler.width = togglerSize;
+
 			break;
 		}
 
 		navbarToggler.$elt.toggleClass('open', navbar.isOpen);
-		previewToggler.$elt.toggleClass('open', previewPanel.isOpen);
-		previewResizer.$elt.toggleClass('open', previewPanel.isOpen);
 
 		editor.applyCss();
-		previewPanel.applyCss();
-		previewContainer.applyCss();
-		previewToggler.applyCss();
-		previewResizer.applyCss();
 		navbarToggler.applyCss();
 
 		fixViewportScrolling();
-		previewButtons.adjustPosition();
 
 		onResize();
 	}
@@ -389,9 +285,6 @@ define([
 
 		var isModalShown = false;
 		$(document.body).on('show.bs.modal', '.modal', function() {
-			// Close panel if open
-			menuPanel.toggle(false);
-			documentPanel.toggle(false);
 			isModalShown = true;
 		}).on('hidden.bs.modal', '.modal', function() {
 			isModalShown = false;
@@ -412,18 +305,10 @@ define([
 		wrapperL2 = new DomObject('.layout-wrapper-l2');
 		wrapperL3 = new DomObject('.layout-wrapper-l3');
 		navbar = new DomObject('.navbar');
-		menuPanel = new DomObject('.menu-panel');
-		documentPanel = new DomObject('.document-panel');
 		editor = new DomObject('#wmd-input');
-		previewPanel = new DomObject('.preview-panel');
-		previewContainer = new DomObject('.preview-container');
 		navbarToggler = new DomObject('.layout-toggler-navbar');
-		previewToggler = new DomObject('.layout-toggler-preview');
-		previewResizer = new DomObject('.layout-resizer-preview');
-		previewButtons = new DomObject('.extension-preview-buttons');
 
 		editorContentElt = editor.elt.querySelector('.editor-content');
-		previewContentElt = document.getElementById('preview-contents');
 		editorMarginElt = editor.elt.querySelector('.editor-margin');
 		navbarInnerElt = navbar.elt.querySelector('.navbar-inner');
 		navbarDropdownElt = navbar.elt.querySelector('.buttons-dropdown .dropdown-menu');
@@ -460,75 +345,12 @@ define([
 		navbar.createToggler();
 		navbarToggler.$elt.click(_.bind(navbar.toggle, navbar));
 
-		previewPanel.isOpen = true;
-		previewPanel.createToggler();
-		previewPanel.halfSize = true;
-		previewToggler.$elt.click(_.bind(previewPanel.toggle, previewPanel));
-
-		// Open StackEdit Viewer if failing to open the preview
-		previewPanel.$elt.on('show.layout.toggle', function() {
-			_.defer(function() {
-				if(!previewPanel.isOpen) {
-					window.location.href = 'viewer';
-				}
-			});
-		});
-
-		documentPanel.isOpen = false;
-		documentPanel.createToggler(true);
-		documentPanel.$elt.find('.toggle-button').click(_.bind(documentPanel.toggle, documentPanel));
-
-		// Hide panels when clicking on a non collapse element
-		documentPanel.$elt.on('click', 'a[data-toggle!=collapse]', _.bind(documentPanel.toggle, documentPanel, false));
-
-		// Focus on editor when document panel is closed
-		documentPanel.$elt.on('hidden.layout.toggle', function() {
-			fixViewportScrolling();
-			isModalShown || editor.elt.focus();
-		});
-
-		menuPanel.isOpen = false;
-		if(!window.viewerMode) {
-			menuPanel.createToggler(true);
-			menuPanel.$elt.find('.toggle-button').click(_.bind(menuPanel.toggle, menuPanel));
-
-			// Hide panels when clicking on a non collapse element
-			menuPanel.$elt.on('click', 'a[data-toggle!=collapse]', _.bind(menuPanel.toggle, menuPanel, false));
-
-			// Close all open sub-menus when one submenu opens and when panel is closed
-			menuPanel.$elt.on('show.bs.collapse hidden.layout.toggle', function() {
-				menuPanel.$elt.find('.in').collapse('hide');
-			});
-
-			// Focus on editor when menu panel is closed
-			menuPanel.$elt.on('hidden.layout.toggle', function() {
-				isModalShown || editor.elt.focus();
-			});
-		}
-
-		previewButtons.adjustPosition = function() {
-			if(!previewButtons.isDragged) {
-				return;
-			}
-			var minX = -windowSize.width + previewButtons.elt.offsetWidth;
-			var minY = -windowSize.height + previewButtons.elt.offsetHeight;
-			this.x < minX && (this.x = minX);
-			this.y < minY && (this.y = minY);
-			this.x > 0 && (this.x = 0);
-			this.y > 0 && (this.y = 0);
-			this.applyCss();
-		};
-
 		// Configure Mousetrap
 		mousetrap.stopCallback = function() {
-			return menuPanel.isOpen || documentPanel.isOpen || isModalShown;
+			return isModalShown;
 		};
 
-		$(window).resize(resizeAll).focus(function() {
-			if(!menuPanel.isOpen && !documentPanel.isOpen && !isModalShown) {
-				editor.elt.focus();
-			}
-		});
+		$(window).resize(resizeAll);
 
 		var styleContent = '';
 
@@ -562,81 +384,10 @@ define([
 	};
 
 	eventMgr.addListener('onReady', function() {
-		previewButtons.x = previewButtonsOffset.x;
-		previewButtons.y = previewButtonsOffset.y;
-		previewButtons.applyCss();
-        setTimeout(function() {
-            previewButtons.$elt.addClass('animate');
-        }, 0);
-
-		function openPreviewButtons() {
-			clearTimeout(closeTimeoutId);
-			if(!previewButtons.isDragged) {
-                previewButtons.isOpen = true;
-				previewButtons.x = previewButtonsOffset.x;
-				previewButtons.applyCss();
-				previewButtons.$elt.removeClass('closed');
-			}
-		}
-
 		var closeTimeoutId;
 		var dropdownOpen = false;
 
-		function closePreviewButtons() {
-			clearTimeout(closeTimeoutId);
-			closeTimeoutId = setTimeout(function() {
-				if(!previewButtons.isDragged && !dropdownOpen) {
-                    previewButtons.isOpen = false;
-					previewButtons.x = previewButtonsOffset.x + previewButtons.elt.offsetWidth + previewButtonsClosedOffset;
-					previewButtons.applyCss();
-					previewButtons.$elt.addClass('closed');
-				}
-			}, 3000);
-		}
-
-        openPreviewButtons();
-		closePreviewButtons();
-		previewButtons.$elt.hover(openPreviewButtons, closePreviewButtons).on('show.bs.dropdown', function() {
-			dropdownOpen = true;
-		}).on('hidden.bs.dropdown', function() {
-			dropdownOpen = false;
-			closePreviewButtons();
-		});
-
-		_.each(previewButtons.elt.querySelectorAll('.btn-group'), function(btnGroupElt) {
-			var $btnGroupElt = $(btnGroupElt);
-			$btnGroupElt.on('shown.bs.dropdown', function() {
-				// Align dropdown to the left of the screen
-				$btnGroupElt.find('.dropdown-menu').css({
-					right: -previewButtons.elt.offsetWidth + $btnGroupElt.width() + $btnGroupElt.position().left
-				});
-				var maxHeight = -previewButtons.y - previewButtonsDropdownMargin;
-				// If it's a dropup
-				if(windowSize.height / 2 > -previewButtons.y) {
-					maxHeight = windowSize.height + previewButtons.y - previewButtons.elt.offsetHeight - previewButtonsDropdownMargin;
-				}
-				$btnGroupElt.find('.markdown-syntax, .table-of-contents').css({
-					'maxHeight': maxHeight
-				});
-			}).addClass('dropup');
-		});
 	});
-
-    eventMgr.addListener('onExtensionButtonResize', function() {
-        if(!previewButtons.isDragged) {
-            if(!previewButtons.isOpen) {
-                previewButtons.$elt.removeClass('animate');
-                previewButtons.x = previewButtonsOffset.x + previewButtons.elt.offsetWidth + previewButtonsClosedOffset;
-                previewButtons.applyCss();
-                setTimeout(function() {
-                    previewButtons.$elt.addClass('animate');
-                }, 0);
-            }
-        }
-        else {
-            previewButtons.adjustPosition();
-        }
-    });
 
 	eventMgr.onLayoutCreated(layout);
 	return layout;

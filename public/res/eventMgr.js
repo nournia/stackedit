@@ -142,39 +142,11 @@ define([
 
 
 	var onPreviewFinished = createEventHook("onPreviewFinished");
-	var onAsyncPreviewListenerList = getExtensionListenerList("onAsyncPreview");
-	var previewContentsElt;
-	var $previewContentsElt;
 	eventMgr.onAsyncPreview = function() {
-		function recursiveCall(callbackList) {
-			var callback = callbackList.length ? callbackList.shift() : function() {
-				setTimeout(function() {
-					var html = "";
-					_.each(previewContentsElt.children, function(elt) {
-						html += elt.innerHTML;
-					});
-					var htmlWithComments = utils.trim(html);
-					var htmlWithoutComments = htmlWithComments.replace(/ <span class="comment label label-danger">.*?<\/span> /g, '');
-					onPreviewFinished(htmlWithComments, htmlWithoutComments);
-				}, 10);
-			};
-			callback(function() {
-				recursiveCall(callbackList);
-			});
-		}
-
-		recursiveCall(onAsyncPreviewListenerList.concat([
-			function(callback) {
-				// We assume some images are loading asynchronously after the preview
-			}
-		]));
 	};
 
 	var onReady = createEventHook("onReady");
 	eventMgr.onReady = function() {
-		previewContentsElt = document.getElementById('preview-contents');
-		$previewContentsElt = $(previewContentsElt);
-
 		// Create a button from an extension listener
 		var createBtn = function(listener) {
 			var buttonGrpElt = crel('div', {
