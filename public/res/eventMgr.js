@@ -89,20 +89,13 @@ define([
 
 	// To access modules that are loaded after extensions
 	addEventHook("onEditorCreated");
-	addEventHook("onFileMgrCreated");
 	addEventHook("onEventMgrCreated");
 
 	// Operations on files
-	addEventHook("onFileCreated");
-	addEventHook("onFileDeleted");
 	addEventHook("onFileSelected");
 	addEventHook("onFileOpen");
 	addEventHook("onFileClosed");
 	addEventHook("onContentChanged");
-	addEventHook("onTitleChanged");
-
-	// Operations on folders
-	addEventHook("onFoldersChanged");
 
 	// Operations on Layout
 	addEventHook("onLayoutCreated");

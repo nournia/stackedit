@@ -2,11 +2,11 @@ define([
     'underscore',
     'utils',
     'eventMgr',
-    'fileMgr',
     'editor',
     'diff_match_patch_uncompressed',
-    'jsondiffpatch'
-], function(_, utils, eventMgr, fileMgr, editor, diff_match_patch, jsondiffpatch) {
+    'jsondiffpatch',
+    'fileMgr'
+], function(_, utils, eventMgr, editor, diff_match_patch, jsondiffpatch) {
 
     function Provider(providerId, providerName) {
         this.providerId = providerId;
