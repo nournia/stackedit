@@ -8,10 +8,9 @@ define([
 	'prism-core',
 	'diff_match_patch_uncompressed',
 	'jsondiffpatch',
-	'crel',
 	'rangy',
 	'libs/prism-markdown'
-], function($, _, utils, eventMgr, Prism, diff_match_patch, jsondiffpatch, crel, rangy) {
+], function($, _, utils, eventMgr, Prism, diff_match_patch, jsondiffpatch, rangy) {
 
 	var editor = {};
 	var scrollTop = 0;
@@ -1017,11 +1016,7 @@ define([
 	}
 
 	function addTrailingLfNode() {
-		trailingLfNode = crel('span', {
-			class: 'token lf'
-		});
-		trailingLfNode.textContent = '\n';
-		contentElt.appendChild(trailingLfNode);
+		contentElt.appendChild($('<span class="token lf">\n</span>')[0]);
 	}
 
 	var escape = (function() {
@@ -1049,12 +1044,8 @@ define([
 			frontMatter = frontMatter.replace(/\n/g, '<span class="token lf">\n</span>');
 			text = '<span class="token md">' + frontMatter + '</span>' + text;
 		}
-		var sectionElt = crel('span', {
-			id: 'wmd-input-section-' + section.id,
-			class: 'wmd-input-section'
-		});
+		var sectionElt = $('<span id="wmd-input-section-'+ section.id +'" class="wmd-input-section">'+ text +'</span>')[0];
 		sectionElt.generated = true;
-		sectionElt.innerHTML = text;
 		section.elt = sectionElt;
 	}
 

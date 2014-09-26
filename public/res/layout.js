@@ -98,51 +98,6 @@ define([
 		animate && (transitionEndTimeoutId = setTimeout(onTransitionEnd, 800));
 	};
 
-	DomObject.prototype.createToggler = function(backdrop) {
-		var $backdropElt;
-		var pushedEvents = 0;
-		this.toggle = function(show) {
-			if(show === this.isOpen) {
-				return;
-			}
-			this.isOpen = _.isBoolean(show) ? show : !this.isOpen;
-			if(this.isOpen) {
-				this.isShown = true;
-				if(backdrop) {
-					$backdropElt = $(utils.createBackdrop(wrapperL1.elt)).on('click.backdrop', _.bind(function() {
-						this.toggle(false);
-					}, this));
-					this.$elt.addClass('bring-to-front');
-				}
-				transitionEndCallbacks.push(_.bind(function() {
-					if(--pushedEvents === 0) {
-						if(this.isOpen) {
-							this.$elt.trigger('shown.layout.toggle');
-						}
-					}
-				}, this));
-			}
-			else {
-				this.$elt.trigger('hide.layout.toggle');
-				if($backdropElt) {
-					$backdropElt.off('click.backdrop');
-					$backdropElt[0].removeBackdrop();
-					$backdropElt = undefined;
-				}
-				transitionEndCallbacks.push(_.bind(function() {
-					if(--pushedEvents === 0) {
-						if(!this.isOpen) {
-							this.isShown = false;
-						}
-					}
-				}, this));
-			}
-			pushedEvents++;
-			startAnimation();
-			resizeAll();
-		};
-	};
-
 	var maxWidthMap = [
 		{ screenWidth: 0, maxWidth: 600 },
 		{ screenWidth: 1000, maxWidth: 700 },
@@ -316,7 +271,6 @@ define([
 		wrapperL1.$elt.on("webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend", onTransitionEnd);
 
 		navbar.isOpen = true;
-		navbar.createToggler();
 
 		// Configure Mousetrap
 		mousetrap.stopCallback = function() {

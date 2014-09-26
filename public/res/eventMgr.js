@@ -1,14 +1,12 @@
 define([
 	"jquery",
 	"underscore",
-	"crel",
 	"mousetrap",
-	"utils",
 	"classes/Extension",
 	"extensions/markdownSectionParser",
 	"extensions/shortcuts",
 	"bootstrap"
-], function($, _, crel, mousetrap, utils, Extension) {
+], function($, _, mousetrap, Extension) {
 
 	var eventMgr = {};
 
@@ -107,21 +105,6 @@ define([
 
 	var onReady = createEventHook("onReady");
 	eventMgr.onReady = function() {
-		// Create a button from an extension listener
-		var createBtn = function(listener) {
-			var buttonGrpElt = crel('div', {
-				class: 'btn-group'
-			});
-			var btnElt = listener();
-			if(_.isString(btnElt)) {
-				buttonGrpElt.innerHTML = btnElt;
-			}
-			else if(_.isElement(btnElt)) {
-				buttonGrpElt.appendChild(btnElt);
-			}
-			return buttonGrpElt;
-		};
-
 		// Shall close every popover
 		mousetrap.bind('escape', function() {
 			eventMgr.onEditorPopover();

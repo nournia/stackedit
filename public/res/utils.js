@@ -1,8 +1,7 @@
 define([
 	"jquery",
-	"underscore",
-	"crel"
-], function($, _, crel) {
+	"underscore"
+], function($, _) {
 
 	var utils = {};
 	var storage = localStorage;
@@ -290,33 +289,6 @@ define([
 			url += "/";
 		}
 		return url;
-	};
-
-	// Create the modal element and add to the body
-	utils.addModal = function(id, content) {
-		var modal = crel('div', {
-			class: 'modal ' + id
-		});
-		modal.innerHTML = content;
-		document.body.appendChild(modal);
-	};
-
-	// Create a backdrop and add to the body
-	utils.createBackdrop = function(parent) {
-		var result = crel('div', {
-			'class': 'modal-backdrop fade'
-		});
-		parent = parent || document.body;
-		parent.appendChild(result);
-		result.offsetWidth; // force reflow
-		result.className = result.className + ' in';
-		result.removeBackdrop = function() {
-			result.className = 'modal-backdrop fade';
-			setTimeout(function() {
-				result.parentNode.removeChild(result);
-			}, 150);
-		};
-		return result;
 	};
 
 	// Create an centered popup window

@@ -5,7 +5,6 @@ requirejs.config({
 	paths: {
 		jquery: 'bower-libs/jquery/jquery',
 		underscore: 'bower-libs/underscore/underscore',
-		crel: 'bower-libs/crel/crel',
 		mousetrap: 'bower-libs/mousetrap/mousetrap',
 		bootstrap: 'bower-libs/bootstrap/dist/js/bootstrap',
 		requirejs: 'bower-libs/requirejs/require',
