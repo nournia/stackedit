@@ -1,0 +1,220 @@
+/* Colors */
+/* Sizes */
+body {
+  tab-size: 4;
+  text-align: start;
+  direction: rtl;
+}
+/*******************
+ * Navbar
+ *******************/
+.navbar {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  z-index: 20;
+}
+.navbar .nav {
+  float: left;
+  margin: 5px 9px;
+}
+.navbar .nav > li {
+  display: inline-block;
+}
+.navbar .nav.pull-right {
+  float: right;
+}
+.navbar .nav.pull-right > li > .dropdown-menu {
+  right: 0;
+  left: auto;
+}
+.navbar .nav.pull-right > li > .dropdown-menu .dropdown-menu {
+  right: 100%;
+  left: auto;
+  margin-right: -1px;
+  margin-left: 0;
+}
+/*****************************
+ * Editor
+ *****************************/
+#wmd-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: "PT Sans", sans-serif;
+  line-height: 1.65;
+  letter-spacing: normal;
+  border-radius: 0;
+  color: #47596b;
+  resize: none;
+  border: none;
+  padding: 0;
+  background-color: #ffffff;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: normal;
+}
+#wmd-input > .editor-content {
+  padding-bottom: 230px;
+}
+#wmd-input > .editor-margin {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+#wmd-input > .editor-margin .discussion {
+  font-size: 17px;
+  position: absolute;
+  cursor: pointer;
+}
+#wmd-input > .editor-margin .discussion.new {
+  display: none;
+}
+#wmd-input > .editor-margin .discussion.new:hover,
+#wmd-input > .editor-margin .discussion.new.active,
+#wmd-input > .editor-margin .discussion.new.active:hover {
+  display: inline-block;
+  color: rgba(102, 128, 153, 0.35) !important;
+}
+#wmd-input > .editor-margin .discussion.icon-split {
+  font-size: 22px;
+}
+#wmd-input > .editor-margin .discussion.icon-split:before {
+  margin-right: 0;
+}
+#wmd-input > .editor-margin .discussion:hover,
+#wmd-input > .editor-margin .discussion.active {
+  text-decoration: none;
+}
+#wmd-input.has-selection > .editor-margin .discussion.new {
+  display: inline-block;
+  color: rgba(102, 128, 153, 0.25);
+}
+#wmd-input.font-monospaced * {
+  line-height: 1.65 !important;
+  font-size: 1em !important;
+}
+#wmd-input .comment-highlight,
+#wmd-input .find-replace-highlight {
+  background-color: rgba(255, 230, 0, 0.5);
+}
+#wmd-input .find-replace-select {
+  background-color: #b5d5ff;
+}
+#wmd-input .code,
+#wmd-input .pre {
+  color: #29333d;
+}
+#wmd-input .tag {
+  color: #29333d;
+}
+#wmd-input .tag .punctuation,
+#wmd-input .tag .attr-value,
+#wmd-input .tag .attr-name {
+  font-weight: normal;
+}
+#wmd-input .latex,
+#wmd-input .math {
+  color: #668099;
+}
+#wmd-input .entity {
+  color: #668099;
+}
+#wmd-input .comment {
+  font-size: 0.9em;
+  color: rgba(102, 128, 153, 0.6);
+}
+#wmd-input .keyword {
+  color: #47596b;
+  font-weight: bold;
+}
+#wmd-input .code,
+#wmd-input .img,
+#wmd-input .imgref,
+#wmd-input .md-toc {
+  padding: 0.15em 0;
+}
+#wmd-input .md-toc {
+  font-size: 2.5em;
+  padding: 0.2em;
+}
+#wmd-input .link .md-underlined-text,
+#wmd-input .linkref .md-underlined-text {
+  color: inherit;
+}
+#wmd-input .blockquote {
+  color: #668099;
+}
+#wmd-input .h1,
+#wmd-input .h2,
+#wmd-input .h3,
+#wmd-input .h4,
+#wmd-input .h5,
+#wmd-input .h6 {
+  font-weight: 600;
+}
+#wmd-input .h1 .md-hash,
+#wmd-input .h2 .md-hash,
+#wmd-input .h3 .md-hash,
+#wmd-input .h4 .md-hash,
+#wmd-input .h5 .md-hash,
+#wmd-input .h6 .md-hash {
+  color: rgba(102, 128, 153, 0.4);
+}
+#wmd-input .h1,
+#wmd-input .h11 {
+  font-size: 1.7em;
+}
+#wmd-input .h2,
+#wmd-input .h22 {
+  font-size: 1.4em;
+}
+#wmd-input .h3 {
+  font-size: 1.2em;
+}
+#wmd-input .h4 {
+  font-size: 1.1em;
+}
+#wmd-input .h5 {
+  font-size: 1em;
+}
+#wmd-input .h6 {
+  font-size: 0.9em;
+}
+#wmd-input .md,
+#wmd-input .hr {
+  color: rgba(102, 128, 153, 0.6);
+  font-style: normal;
+  font-weight: normal;
+}
+#wmd-input .em,
+#wmd-input .em .md {
+  font-style: italic;
+}
+#wmd-input .strong,
+#wmd-input .strong .md {
+  font-weight: bold;
+}
+#wmd-input .md-strike-text {
+  text-decoration: line-through;
+}
+#wmd-input .url,
+#wmd-input .email,
+#wmd-input .md-underlined-text {
+  text-decoration: underline;
+}
+#wmd-input .linkdef .url {
+  color: rgba(102, 128, 153, 0.6);
+}
+#wmd-input .img,
+#wmd-input .imgref {
+  padding: 0.2em 0.4em;
+  padding-right: 0;
+}
+#wmd-input .md-bang,
+#wmd-input .md-alt,
+#wmd-input .md-title {
+  color: #587ea4;
+}

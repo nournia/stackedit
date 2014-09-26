@@ -274,26 +274,6 @@ define([
 			}
 		});
 
-		// Hot theme switcher in the settings
-		var currentTheme = window.theme;
-
-		function applyTheme(theme) {
-			theme = theme || 'default';
-			if(currentTheme != theme) {
-				var themeModule = "less!themes/" + theme;
-				if(window.baseDir.indexOf('-min') !== -1) {
-					themeModule = "css!themes/" + theme;
-				}
-				// Undefine the module in RequireJS
-				requirejs.undef(themeModule);
-				// Then reload the style
-				require([
-					themeModule
-				]);
-				currentTheme = theme;
-			}
-		}
-
 		// Reset inputs
 		$(".action-reset-input").click(function() {
 			utils.resetModalInputs();

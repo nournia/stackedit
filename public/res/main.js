@@ -2,13 +2,6 @@
 /*global requirejs */
 requirejs.config({
 	waitSeconds: 0,
-	packages: [
-		{
-			name: 'less',
-			location: 'bower-libs/require-less',
-			main: 'less'
-		}
-	],
 	paths: {
 		jquery: 'bower-libs/jquery/jquery',
 		underscore: 'bower-libs/underscore/underscore',
@@ -98,8 +91,7 @@ require([
 	"eventMgr",
 	"constants",
 	"classes/Provider",
-	"rangy-cssclassapplier",
-	"less!styles/main"
+	"rangy-cssclassapplier"
 ], function($, rangy, core, eventMgr) {
 
 	if(window.noStart) {
