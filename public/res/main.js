@@ -9,7 +9,6 @@ requirejs.config({
 		mousetrap: 'bower-libs/mousetrap/mousetrap',
 		bootstrap: 'bower-libs/bootstrap/dist/js/bootstrap',
 		requirejs: 'bower-libs/requirejs/require',
-		highlightjs: 'libs/highlight/highlight.pack',
 		pagedown: 'libs/Markdown.Editor',
 		prism: 'bower-libs/prism/prism',
 		'prism-core': 'bower-libs/prism/components/prism-core',
@@ -51,9 +50,6 @@ requirejs.config({
 			'bower-libs/prism/components/prism-markup',
 			'libs/prism-latex'
 		],
-		highlightjs: {
-			exports: 'hljs'
-		},
 		bootstrap: [
 			'jquery'
 		],

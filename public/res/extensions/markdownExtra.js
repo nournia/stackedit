@@ -3,9 +3,8 @@ define([
 	"jquery",
 	"underscore",
 	"utils",
-	"classes/Extension",
-	'highlightjs',
-], function($, _, utils, Extension, prettify, hljs) {
+	"classes/Extension"
+], function($, _, utils, Extension, prettify) {
 
 	var markdownExtra = new Extension("markdownExtra", "Markdown Extra", true);
 	markdownExtra.settingsBlock = '';
