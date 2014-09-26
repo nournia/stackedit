@@ -19,7 +19,7 @@ define([
 	var windowSize;
 
 	var wrapperL1, wrapperL2, wrapperL3;
-	var navbar, editor, navbarToggler;
+	var navbar, editor;
 
 	var animate = false;
 
@@ -160,7 +160,6 @@ define([
 	}
 
 	var editorContentElt;
-	var editorMarginElt;
 	var navbarInnerElt;
 	var navbarDropdownElt;
 	var $navbarDropdownBtnElt;
@@ -192,7 +191,6 @@ define([
 		editorContentElt.style.paddingLeft = editorPadding + 'px';
 		editorContentElt.style.paddingRight = editorPadding + 'px';
 		editorContentElt.style.paddingBottom = paddingBottom + 'px';
-		editorMarginElt.style.width = editorPadding + 'px';
 
 		var maxWidth = navbarMarginWidth + workingIndicatorWidth + titleMinWidth + buttonsDropdownWidth;
 		if(window.viewerMode) {
@@ -265,18 +263,11 @@ define([
 
 			editor.height = wrapperL3.height;
 			editor.width = wrapperL3.width;
-			navbarToggler.width = togglerSize;
-
 			break;
 		}
 
-		navbarToggler.$elt.toggleClass('open', navbar.isOpen);
-
 		editor.applyCss();
-		navbarToggler.applyCss();
-
 		fixViewportScrolling();
-
 		onResize();
 	}
 
@@ -305,10 +296,8 @@ define([
 		wrapperL3 = new DomObject('.layout-wrapper-l3');
 		navbar = new DomObject('.navbar');
 		editor = new DomObject('#wmd-input');
-		navbarToggler = new DomObject('.layout-toggler-navbar');
 
 		editorContentElt = editor.elt.querySelector('.editor-content');
-		editorMarginElt = editor.elt.querySelector('.editor-margin');
 		navbarInnerElt = navbar.elt.querySelector('.navbar-inner');
 		navbarDropdownElt = navbar.elt.querySelector('.buttons-dropdown .dropdown-menu');
 		$navbarDropdownBtnElt = navbar.$elt.find('.buttons-dropdown');
@@ -342,7 +331,6 @@ define([
 
 		navbar.isOpen = true;
 		navbar.createToggler();
-		navbarToggler.$elt.click(_.bind(navbar.toggle, navbar));
 
 		// Configure Mousetrap
 		mousetrap.stopCallback = function() {

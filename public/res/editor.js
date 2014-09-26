@@ -19,41 +19,13 @@ define([
 	var $inputElt;
 	var contentElt;
 	var $contentElt;
-	var marginElt;
-	var $marginElt;
-	var previewElt;
-	var pagedownEditor;
 	var trailingLfNode;
-
-	var refreshPreviewLater = (function() {
-		var elapsedTime = 0;
-		var timeoutId;
-		var refreshPreview = function() {
-			var startTime = Date.now();
-			pagedownEditor.refreshPreview();
-			elapsedTime = Date.now() - startTime;
-		};
-		return function() {
-			clearTimeout(timeoutId);
-			timeoutId = setTimeout(refreshPreview, elapsedTime < 2000 ? elapsedTime : 2000);
-		};
-	})();
-	eventMgr.addListener('onPagedownConfigure', function(pagedownEditorParam) {
-		pagedownEditor = pagedownEditorParam;
-	});
 
 	var isComposing = 0;
 	eventMgr.addListener('onSectionsCreated', function(newSectionList) {
 		if(!isComposing) {
 			updateSectionList(newSectionList);
 			highlightSections();
-		}
-		if(fileChanged === true) {
-			// Refresh preview synchronously
-			pagedownEditor.refreshPreview();
-		}
-		else {
-			refreshPreviewLater();
 		}
 	});
 
@@ -183,22 +155,6 @@ define([
 			if(this.cursorY !== coordinates.y) {
 				this.cursorY = coordinates.y;
 				eventMgr.onCursorCoordinates(coordinates.x, coordinates.y);
-			}
-			if(adjustScroll) {
-				var adjustTop, adjustBottom;
-				adjustTop = adjustBottom = inputElt.offsetHeight;
-				adjustTop = this.adjustTop || adjustTop;
-				adjustBottom = this.adjustBottom || adjustTop;
-				if(adjustTop && adjustBottom) {
-					var cursorMinY = inputElt.scrollTop + adjustTop;
-					var cursorMaxY = inputElt.scrollTop + inputElt.offsetHeight - adjustBottom;
-					if(selectionMgr.cursorY < cursorMinY) {
-						inputElt.scrollTop += selectionMgr.cursorY - cursorMinY;
-					}
-					else if(selectionMgr.cursorY > cursorMaxY) {
-						inputElt.scrollTop += selectionMgr.cursorY - cursorMaxY;
-					}
-				}
 			}
 			adjustScroll = false;
 		}, this);
@@ -483,7 +439,6 @@ define([
 	function focus() {
 		$contentElt.focus();
 		selectionMgr.updateSelectionRange();
-		inputElt.scrollTop = scrollTop;
 	}
 
 	editor.focus = focus;
@@ -697,9 +652,7 @@ define([
 			selectionMgr.updateCursorCoordinates();
 			undoMgr.saveSelectionState();
 			eventMgr.onFileOpen(fileDesc, textContent);
-			previewElt.scrollTop = fileDesc.previewScrollTop;
 			scrollTop = fileDesc.editorScrollTop;
-			inputElt.scrollTop = scrollTop;
 			fileChanged = false;
 		}
 	}
@@ -758,23 +711,8 @@ define([
 		$inputElt = $(inputElt);
 		contentElt = inputElt.querySelector('.editor-content');
 		$contentElt = $(contentElt);
-		marginElt = inputElt.querySelector('.editor-margin');
-		$marginElt = $(marginElt);
-		previewElt = document.querySelector('.preview-container');
 
 		watcher.startWatching();
-
-		$(inputElt).scroll(function() {
-			scrollTop = inputElt.scrollTop;
-			if(fileChanged === false) {
-				fileDesc.editorScrollTop = scrollTop;
-			}
-		});
-		$(previewElt).scroll(function() {
-			if(fileChanged === false) {
-				fileDesc.previewScrollTop = previewElt.scrollTop;
-			}
-		});
 
 		// See https://gist.github.com/shimondoodkin/1081133
 		if(/AppleWebKit\/([\d.]+)/.exec(navigator.userAgent)) {

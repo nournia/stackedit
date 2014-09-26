@@ -57,40 +57,7 @@ body {
   word-break: normal;
 }
 #wmd-input > .editor-content {
-  padding-bottom: 230px;
-}
-#wmd-input > .editor-margin {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-#wmd-input > .editor-margin .discussion {
-  font-size: 17px;
-  position: absolute;
-  cursor: pointer;
-}
-#wmd-input > .editor-margin .discussion.new {
-  display: none;
-}
-#wmd-input > .editor-margin .discussion.new:hover,
-#wmd-input > .editor-margin .discussion.new.active,
-#wmd-input > .editor-margin .discussion.new.active:hover {
-  display: inline-block;
-  color: rgba(102, 128, 153, 0.35) !important;
-}
-#wmd-input > .editor-margin .discussion.icon-split {
-  font-size: 22px;
-}
-#wmd-input > .editor-margin .discussion.icon-split:before {
-  margin-right: 0;
-}
-#wmd-input > .editor-margin .discussion:hover,
-#wmd-input > .editor-margin .discussion.active {
-  text-decoration: none;
-}
-#wmd-input.has-selection > .editor-margin .discussion.new {
-  display: inline-block;
-  color: rgba(102, 128, 153, 0.25);
+  padding-top: 70px;
 }
 #wmd-input.font-monospaced * {
   line-height: 1.65 !important;

@@ -50,6 +50,7 @@ define([
 	};
 
 	fileMgr.createFile = function(title, content, discussionListJSON, syncLocations, isTemporary) {
+		content = content !== undefined ? content : "\n\n\n> Written with [StackEdit].";
 		if(!title) {
 			// Create a file title
 			title = constants.DEFAULT_FILE_TITLE;
