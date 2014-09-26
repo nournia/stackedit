@@ -3,11 +3,11 @@ define([
 	"jquery",
 	"underscore",
 	"editor",
-	"layout",
 	"utils",
 	"eventMgr",
-	'pagedown'
-], function($, _, editor, layout, utils, eventMgr) {
+	"mousetrap",
+	"pagedown"
+], function($, _, editor, utils, eventMgr, mousetrap) {
 
 	var core = {};
 
@@ -87,12 +87,24 @@ define([
 		$("#wmd-redo-button").append($('<span class="glyphicon glyphicon-arrow-right">')).appendTo($btnGroupElt);
 	};
 
+	// Modal state
+	var isModalShown = false;
+	$(document.body).on('show.bs.modal', '.modal', function() {
+		isModalShown = true;
+	}).on('hidden.bs.modal', '.modal', function() {
+		isModalShown = false;
+	});
+
 	// Initialize multiple things and then fire eventMgr.onReady
 	core.onReady = function() {
 		// Initialize utils library
 		utils.init();
 
-		layout.init();
+		// Configure Mousetrap
+		mousetrap.stopCallback = function() {
+			return isModalShown;
+		};
+
 		editor.init();
 		eventMgr.onReady();
 	};
