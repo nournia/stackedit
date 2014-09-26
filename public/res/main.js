@@ -63,7 +63,9 @@ require([
 	"jquery",
 	"rangy",
 	"core",
-	"classes/Provider",
+	"editor",
+	"eventMgr",
+	"fileMgr",
 	"rangy-cssclassapplier"
 ], function($, rangy, core) {
 

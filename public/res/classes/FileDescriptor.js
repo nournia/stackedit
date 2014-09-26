@@ -10,17 +10,7 @@ define([
         this._title = title || storage[fileIndex + ".title"];
         this._editorStart = parseInt(storage[fileIndex + ".editorEnd"]) || 0;
         this._editorEnd = parseInt(storage[fileIndex + ".editorEnd"]) || 0;
-        this._selectTime = parseInt(storage[fileIndex + ".selectTime"]) || 0;
         this._discussionList = JSON.parse(storage[fileIndex + ".discussionList"] || '{}');
-        Object.defineProperty(this, 'title', {
-            get: function() {
-                return this._title;
-            },
-            set: function(title) {
-                this._title = title;
-                storage[this.fileIndex + ".title"] = title;
-            }
-        });
         Object.defineProperty(this, 'content', {
             get: function() {
                 return storage[this.fileIndex + ".content"];
@@ -45,15 +35,6 @@ define([
             set: function(editorEnd) {
                 this._editorEnd = editorEnd;
                 storage[this.fileIndex + ".editorEnd"] = editorEnd;
-            }
-        });
-        Object.defineProperty(this, 'selectTime', {
-            get: function() {
-                return this._selectTime;
-            },
-            set: function(selectTime) {
-                this._selectTime = selectTime;
-                storage[this.fileIndex + ".selectTime"] = selectTime;
             }
         });
         Object.defineProperty(this, 'discussionList', {
