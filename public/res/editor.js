@@ -3,17 +3,15 @@
 define([
 	'jquery',
 	'underscore',
-	'utils',
 	'eventMgr',
 	'prism-core',
 	'diff_match_patch_uncompressed',
 	'jsondiffpatch',
 	'rangy',
 	'libs/prism-markdown'
-], function($, _, utils, eventMgr, Prism, diff_match_patch, jsondiffpatch, rangy) {
+], function($, _, eventMgr, Prism, diff_match_patch, jsondiffpatch, rangy) {
 
 	var editor = {};
-	var scrollTop = 0;
 	var inputElt;
 	var $inputElt;
 	var contentElt;
@@ -143,20 +141,6 @@ define([
 			range.setEnd(endOffset.container, endOffset.offsetInContainer);
 			return range;
 		};
-		var adjustScroll;
-		var debouncedUpdateCursorCoordinates = utils.debounce(function() {
-			$inputElt.toggleClass('has-selection', this.selectionStart !== this.selectionEnd);
-			var coordinates = this.getCoordinates(this.selectionEnd, this.selectionEndContainer, this.selectionEndOffset);
-			if(this.cursorY !== coordinates.y) {
-				this.cursorY = coordinates.y;
-				eventMgr.onCursorCoordinates(coordinates.x, coordinates.y);
-			}
-			adjustScroll = false;
-		}, this);
-		this.updateCursorCoordinates = function(adjustScrollParam) {
-			adjustScroll = adjustScroll || adjustScrollParam;
-			debouncedUpdateCursorCoordinates();
-		};
 		this.updateSelectionRange = function() {
 			var min = Math.min(this.selectionStart, this.selectionEnd);
 			var max = Math.max(this.selectionStart, this.selectionEnd);
@@ -165,26 +149,17 @@ define([
 			selection.removeAllRanges();
 			selection.addRange(range, this.selectionStart > this.selectionEnd);
 		};
-		var saveLastSelection = _.debounce(function() {
-			lastSelectionStart = self.selectionStart;
-			lastSelectionEnd = self.selectionEnd;
-		}, 50);
 		this.setSelectionStartEnd = function(start, end) {
-			if(start === undefined) {
+			if(start === undefined)
 				start = this.selectionStart;
-			}
-			if(start < 0) {
+			if(start < 0)
 				start = 0;
-			}
-			if(end === undefined) {
+			if(end === undefined)
 				end = this.selectionEnd;
-			}
-			if(end < 0) {
+			if(end < 0)
 				end = 0;
-			}
 			this.selectionStart = start;
 			this.selectionEnd = end;
-			saveLastSelection();
 		};
 		this.saveSelectionState = (function() {
 			function save() {
@@ -231,12 +206,11 @@ define([
 			}
 
 			var nextTickAdjustScroll = false;
-			var debouncedSave = utils.debounce(function() {
+			var debouncedSave = _.debounce(function() {
 				save();
 				if(lastSelectionStart === self.selectionStart && lastSelectionEnd === self.selectionEnd) {
 					nextTickAdjustScroll = false;
 				}
-				self.updateCursorCoordinates(nextTickAdjustScroll);
 				nextTickAdjustScroll = false;
 			});
 
@@ -378,7 +352,6 @@ define([
 		var endOffset = selectionStart + replacement.length;
 		selectionMgr.setSelectionStartEnd(endOffset, endOffset);
 		selectionMgr.updateSelectionRange();
-		selectionMgr.updateCursorCoordinates(true);
 	}
 
 	editor.replace = replace;
@@ -390,7 +363,6 @@ define([
 			var offset = editor.setValue(value);
 			selectionMgr.setSelectionStartEnd(offset.end, offset.end);
 			selectionMgr.updateSelectionRange();
-			selectionMgr.updateCursorCoordinates(true);
 		}
 	}
 
@@ -410,7 +382,6 @@ define([
 		offset = offset - text.length + replacement.length;
 		selectionMgr.setSelectionStartEnd(offset, offset);
 		selectionMgr.updateSelectionRange();
-		selectionMgr.updateCursorCoordinates(true);
 		return true;
 	}
 
@@ -451,7 +422,7 @@ define([
 		}; // For compatibility with PageDown
 		this.onButtonStateChange = function() {
 		}; // To be overridden by PageDown
-		this.saveState = utils.debounce(function() {
+		this.saveState = _.debounce(function() {
 			redoStack = [];
 			var currentTime = Date.now();
 			if(this.currentMode == 'comment' ||
@@ -505,7 +476,6 @@ define([
 				}
 				selectionMgr.setSelectionStartEnd(selectionStart, selectionEnd);
 				selectionMgr.updateSelectionRange();
-				selectionMgr.updateCursorCoordinates(true);
 			});
 
 			selectionStartBefore = selectionStart;
@@ -599,7 +569,6 @@ define([
 		else {
 			textContent = newTextContent;
 			selectionMgr.updateSelectionRange();
-			selectionMgr.updateCursorCoordinates();
 			undoMgr.saveSelectionState();
 			eventMgr.onContentChanged(textContent);
 			fileChanged = false;
@@ -640,7 +609,6 @@ define([
 			set: function(value) {
 				selectionMgr.setSelectionStartEnd(value);
 				selectionMgr.updateSelectionRange();
-				selectionMgr.updateCursorCoordinates();
 			},
 
 			enumerable: true,
@@ -654,7 +622,6 @@ define([
 			set: function(value) {
 				selectionMgr.setSelectionStartEnd(undefined, value);
 				selectionMgr.updateSelectionRange();
-				selectionMgr.updateCursorCoordinates();
 			},
 
 			enumerable: true,
@@ -912,7 +879,6 @@ define([
 			}
 			addTrailingLfNode();
 			selectionMgr.updateSelectionRange();
-			selectionMgr.updateCursorCoordinates();
 		});
 	}
 

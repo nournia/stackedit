@@ -13,6 +13,10 @@ body {
   margin: 5px 9px;
 }
 
+.input-group {
+  direction: ltr;
+}
+
 #wmd-input {
   width: 100%;
   height: 100%;

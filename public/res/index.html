@@ -1,96 +1,86 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>StackEdit – Editor</title>
-        <link type="text/css" rel="stylesheet" href="styles/main.css">
-        <link type="text/css" rel="stylesheet" href="bower-libs/bootstrap/dist/css/bootstrap.css">
-        <script>
-            window.baseDir = '';
-            window.require = {
-                baseUrl: window.baseDir,
-                deps: ['main']
-            };
-        </script>
-        <script src="require.js"></script>
-    </head>
+	<head>
+		<title>StackEdit – Editor</title>
+		<link type="text/css" rel="stylesheet" href="styles/main.css">
+		<link type="text/css" rel="stylesheet" href="bower-libs/bootstrap/dist/css/bootstrap.css">
+		<script>
+			window.baseDir = '';
+			window.require = {
+				baseUrl: window.baseDir,
+				deps: ['main']
+			};
+		</script>
+		<script src="require.js"></script>
+	</head>
 
 <body>
 <div class="layout-wrapper">
-    <div class="navbar navbar-default ui-layout-north">
-        <div class="navbar-inner">
-            <ul class="nav left-buttons">
-                <li class="wmd-button-group1 btn-group"></li>
-            </ul>
-            <ul class="nav left-buttons">
-                <li class="wmd-button-group2 btn-group"></li>
-            </ul>
-            <ul class="nav left-buttons">
-                <li class="wmd-button-group3 btn-group"></li>
-            </ul>
-            <ul class="nav left-buttons">
-                <li class="wmd-button-group5 btn-group"></li>
-            </ul>
-        </div>
-    </div>
+	<div class="navbar navbar-default ui-layout-north">
+		<div class="navbar-inner">
+			<ul class="nav left-buttons">
+				<li class="wmd-button-group1 btn-group"></li>
+			</ul>
+			<ul class="nav left-buttons">
+				<li class="wmd-button-group2 btn-group"></li>
+			</ul>
+			<ul class="nav left-buttons">
+				<li class="wmd-button-group3 btn-group"></li>
+			</ul>
+			<ul class="nav left-buttons">
+				<li class="wmd-button-group5 btn-group"></li>
+			</ul>
+		</div>
+	</div>
 
-    <pre id="wmd-input" class="ui-layout-center form-control"><div class="editor-content" contenteditable=true></div></pre>
+	<pre id="wmd-input" class="ui-layout-center form-control"><div class="editor-content" contenteditable=true></div></pre>
 </div>
 <div id="wmd-button-bar" class="hide"></div>
 
 <div class="modal fade modal-insert-link">
-    <div class="modal-dialog">
-        <div class="modal-content">
+	<div class="modal-dialog">
+		<div class="modal-content">
 
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"
-                    aria-hidden="true">&times;</button>
-                <h2 class="modal-title">Hyperlink</h2>
-            </div>
-            <div class="modal-body">
-                <p>Please provide the link URL and an optional title:</p>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="icon-globe"></i></span><input
-                        id="input-insert-link" type="text" class="col-sm-5 form-control"
-                        placeholder='http://example.com/ "optional title"' />
-                </div>
-            </div>
-            <div class="modal-footer">
-                <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
-                <a href="#" class="btn btn-primary action-insert-link"
-                    data-dismiss="modal">OK</a>
-            </div>
-        </div>
-    </div>
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h2 class="modal-title">Hyperlink</h2>
+			</div>
+			<div class="modal-body">
+				<p>Please provide the link URL and an optional title:</p>
+				<div class="input-group">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-globe"></span></span><input id="input-insert-link" type="text" class="col-sm-5 form-control" placeholder='http://example.com/ "optional title"' />
+				</div>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+				<a href="#" class="btn btn-primary action-insert-link"
+					data-dismiss="modal">OK</a>
+			</div>
+		</div>
+	</div>
 </div>
-
 
 <div class="modal fade modal-insert-image">
-    <div class="modal-dialog">
-        <div class="modal-content">
+	<div class="modal-dialog">
+		<div class="modal-content">
 
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"
-                    aria-hidden="true">&times;</button>
-                <h2 class="modal-title">Image</h2>
-            </div>
-            <div class="modal-body">
-                <p>Please provide the image URL and an optional title:</p>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="icon-picture"></i></span><input
-                        id="input-insert-image" type="text" class="col-sm-5 form-control"
-                        placeholder='http://example.com/image.jpg "optional title"' />
-                </div>
-            </div>
-            <div class="modal-footer">
-                <a href="#" class="btn btn-default pull-left action-import-image-gplus"
-                    data-dismiss="modal"><i class="icon-provider-gplus"></i> Import
-                    from Google+</a> <a href="#" class="btn btn-default"
-                    data-dismiss="modal">Cancel</a> <a href="#"
-                    class="btn btn-primary action-insert-image" data-dismiss="modal">OK</a>
-            </div>
-        </div>
-    </div>
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h2 class="modal-title">Image</h2>
+			</div>
+			<div class="modal-body">
+				<p>Please provide the image URL and an optional title:</p>
+				<div class="input-group">
+					<span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span><input id="input-insert-image" type="text" class="col-sm-5 form-control" placeholder='http://example.com/image.jpg "optional title"' />
+				</div>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a> <a href="#" class="btn btn-primary action-insert-image" data-dismiss="modal">OK</a>
+			</div>
+		</div>
+	</div>
 </div>
-
 </body>
 </html>

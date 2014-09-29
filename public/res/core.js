@@ -3,11 +3,10 @@ define([
 	"jquery",
 	"underscore",
 	"editor",
-	"utils",
 	"eventMgr",
 	"mousetrap",
 	"pagedown"
-], function($, _, editor, utils, eventMgr, mousetrap) {
+], function($, _, editor, eventMgr, mousetrap) {
 
 	var core = {};
 
@@ -40,17 +39,14 @@ define([
 		// Custom insert link dialog
 		pagedownEditor.hooks.set("insertLinkDialog", function(callback) {
 			core.insertLinkCallback = callback;
-			utils.resetModalInputs();
+			$(".modal input[type=text]").val("");
 			$(".modal-insert-link").modal();
 			return true;
 		});
 		// Custom insert image dialog
 		pagedownEditor.hooks.set("insertImageDialog", function(callback) {
 			core.insertLinkCallback = callback;
-			if(core.catchModal) {
-				return true;
-			}
-			utils.resetModalInputs();
+			$(".modal input[type=text]").val("");
 			$(".modal-insert-image").modal();
 			return true;
 		});
@@ -126,14 +122,14 @@ define([
 
 		// Click events on "insert link" and "insert image" dialog buttons
 		$(".action-insert-link").click(function(e) {
-			var value = utils.getInputTextValue($("#input-insert-link"), e);
+			var value = $("#input-insert-link").val();
 			if(value !== undefined) {
 				core.insertLinkCallback(value);
 				core.insertLinkCallback = undefined;
 			}
 		});
 		$(".action-insert-image").click(function(e) {
-			var value = utils.getInputTextValue($("#input-insert-image"), e);
+			var value = $("#input-insert-image").val();
 			if(value !== undefined) {
 				core.insertLinkCallback(value);
 				core.insertLinkCallback = undefined;
@@ -146,23 +142,6 @@ define([
 				core.insertLinkCallback(null);
 				core.insertLinkCallback = undefined;
 			}
-		});
-
-		// Reset inputs
-		$(".action-reset-input").click(function() {
-			utils.resetModalInputs();
-		});
-
-		// Avoid dropdown panels to close on click
-		$("div.dropdown-menu").click(function(e) {
-			e.stopPropagation();
-		});
-
-		// Non unique window dialog
-		$('.modal-non-unique').modal({
-			backdrop: "static",
-			keyboard: false,
-			show: false
 		});
 	});
 
