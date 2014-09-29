@@ -19,6 +19,7 @@ define([
 	var contentElt;
 	var $contentElt;
 	var trailingLfNode;
+	var defaultContent = 'Simple **StackEdit**.';
 
 	var isComposing = 0;
 	eventMgr.addListener('onSectionsCreated', function(newSectionList) {
@@ -29,11 +30,6 @@ define([
 	});
 
 	var fileChanged = true;
-	var fileDesc;
-	eventMgr.addListener('onFileSelected', function(selectedFileDesc) {
-		fileChanged = true;
-		fileDesc = selectedFileDesc;
-	});
 
 	// Used to detect editor changes
 	function Watcher() {
@@ -188,8 +184,6 @@ define([
 			}
 			this.selectionStart = start;
 			this.selectionEnd = end;
-			fileDesc.editorStart = start;
-			fileDesc.editorEnd = end;
 			saveLastSelection();
 		};
 		this.saveSelectionState = (function() {
@@ -507,8 +501,7 @@ define([
 			watcher.noWatch(function() {
 				if(textContent != state.content) {
 					setValueNoWatch(state.content);
-					fileDesc.content = state.content;
-					eventMgr.onContentChanged(fileDesc, state.content);
+					eventMgr.onContentChanged(state.content);
 				}
 				selectionMgr.setSelectionStartEnd(selectionStart, selectionEnd);
 				selectionMgr.updateSelectionRange();
@@ -541,13 +534,13 @@ define([
 			restoreState.call(this, state, state.selectionStartAfter, state.selectionEndAfter);
 		};
 		this.init = function() {
-			var content = fileDesc.content;
+			var content = defaultContent;
 			undoStack = [];
 			redoStack = [];
 			lastTime = 0;
 			currentState = {
-				selectionStartAfter: fileDesc.selectionStart,
-				selectionEndAfter: fileDesc.selectionEnd,
+				selectionStartAfter: 0,
+				selectionEndAfter: 0,
 				content: content
 			};
 			this.currentMode = undefined;
@@ -598,21 +591,17 @@ define([
 			}
 			undoMgr.currentMode = undoMgr.currentMode || 'typing';
 			textContent = newTextContent;
-			fileDesc.content = textContent;
 			selectionMgr.saveSelectionState();
-			eventMgr.onContentChanged(fileDesc, textContent);
+			eventMgr.onContentChanged(textContent);
 			undoMgr.saveState();
 			triggerSpellCheck();
 		}
 		else {
 			textContent = newTextContent;
-			fileDesc.content = textContent;
-			selectionMgr.setSelectionStartEnd(fileDesc.editorStart, fileDesc.editorEnd);
 			selectionMgr.updateSelectionRange();
 			selectionMgr.updateCursorCoordinates();
 			undoMgr.saveSelectionState();
-			eventMgr.onFileOpen(fileDesc, textContent);
-			scrollTop = fileDesc.editorScrollTop;
+			eventMgr.onContentChanged(textContent);
 			fileChanged = false;
 		}
 	}

@@ -64,7 +64,6 @@ require([
 	"core",
 	"editor",
 	"eventMgr",
-	"fileMgr",
 	"rangy-cssclassapplier"
 ], function($, rangy, core) {
 

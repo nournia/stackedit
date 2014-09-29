@@ -13,13 +13,7 @@ define([
 
 	// Create the PageDown editor
 	var pagedownEditor;
-	var fileDesc;
-	core.initEditor = function(fileDescParam) {
-		if(fileDesc !== undefined) {
-			eventMgr.onFileClosed(fileDesc);
-		}
-		fileDesc = fileDescParam;
-
+	core.initEditor = function() {
 		if(pagedownEditor !== undefined) {
 			// If the editor is already created
 			editor.undoMgr.init();
@@ -107,6 +101,7 @@ define([
 
 		editor.init();
 		eventMgr.onReady();
+		core.initEditor();
 	};
 
 	// Other initialization that are not prioritary

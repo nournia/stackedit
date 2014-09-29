@@ -86,9 +86,6 @@ define([
 	addEventHook("onEventMgrCreated");
 
 	// Operations on files
-	addEventHook("onFileSelected");
-	addEventHook("onFileOpen");
-	addEventHook("onFileClosed");
 	addEventHook("onContentChanged");
 
 	// Operations on editor
