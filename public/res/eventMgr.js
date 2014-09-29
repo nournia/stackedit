@@ -92,16 +92,9 @@ define([
 	addEventHook("onPagedownConfigure");
 	addEventHook("onSectionsCreated");
 	addEventHook("onCursorCoordinates");
-	addEventHook("onEditorPopover");
 
 	var onReady = createEventHook("onReady");
 	eventMgr.onReady = function() {
-		// Shall close every popover
-		mousetrap.bind('escape', function() {
-			eventMgr.onEditorPopover();
-		});
-
-		// Call onReady listeners
 		onReady();
 	};
 

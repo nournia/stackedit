@@ -91,9 +91,6 @@ define([
 
 	// Initialize multiple things and then fire eventMgr.onReady
 	core.onReady = function() {
-		// Initialize utils library
-		utils.init();
-
 		// Configure Mousetrap
 		mousetrap.stopCallback = function() {
 			return isModalShown;
@@ -166,15 +163,6 @@ define([
 			backdrop: "static",
 			keyboard: false,
 			show: false
-		});
-
-		// Load images
-		_.each(document.querySelectorAll('img'), function(imgElt) {
-			var $imgElt = $(imgElt);
-			var src = $imgElt.data('stackeditSrc');
-			if(src) {
-				$imgElt.attr('src', window.baseDir + '/img/' + src);
-			}
 		});
 	});
 
