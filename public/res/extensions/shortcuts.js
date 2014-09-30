@@ -1,11 +1,10 @@
 define([
 	"jquery",
 	"underscore",
-	"mousetrap",
-	"classes/Extension"
-], function($, _, mousetrap, Extension) {
+	"mousetrap"
+], function($, _, mousetrap) {
 
-	var shortcuts = new Extension("shortcuts", "Shortcuts", true, true);
+	var shortcuts = {extensionId: "shortcuts"};
 	shortcuts.settingsBlock = '';
 	shortcuts.defaultConfig = {
 		mapping: {

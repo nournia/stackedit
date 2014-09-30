@@ -2,34 +2,21 @@ define([
 	"jquery",
 	"underscore",
 	"mousetrap",
-	"classes/Extension",
 	"extensions/markdownSectionParser",
 	"extensions/shortcuts"
-], function($, _, mousetrap, Extension) {
+], function($, _, mousetrap, markdownSectionParser, shortcuts) {
 
 	var eventMgr = {};
 
-	// Create a list of extensions from module arguments
-	var extensionList = _.chain(arguments).map(function(argument) {
-		return argument instanceof Extension && argument;
-	}).compact().value();
+	var extensionList = [markdownSectionParser, shortcuts];
 
 	// Configure extensions
 	var extensionSettings = {};
 	_.each(extensionList, function(extension) {
-		// Set the extension.config attribute from settings or default
-		// configuration
+		// Set the extension.config attribute from settings or default configuration
 		extension.config = _.extend({}, extension.defaultConfig, extensionSettings[extension.extensionId]);
-		if(window.viewerMode === true && extension.disableInViewer === true) {
-			// Skip enabling the extension if we are in the viewer and extension
-			// doesn't support it
-			extension.enabled = false;
-		}
-		else {
-			// Enable the extension if it's not optional or it has not been
-			// disabled by the user
-			extension.enabled = !extension.isOptional || extension.config.enabled === undefined || extension.config.enabled === true;
-		}
+
+		extension.enabled = true;
 	});
 
 	// Returns all listeners with the specified name that are implemented in the

@@ -1,9 +1,6 @@
-define([
-    "underscore",
-    "classes/Extension"
-], function(_, Extension) {
+define([], function() {
 
-    var markdownSectionParser = new Extension("markdownSectionParser", "Markdown section parser");
+    var markdownSectionParser = {extensionId: "markdownSectionParser"};
 
     var eventMgr;
     markdownSectionParser.onEventMgrCreated = function(eventMgrParameter) {
