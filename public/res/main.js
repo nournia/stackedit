@@ -46,11 +46,10 @@ require([
 	"jquery",
 	"core",
 	"editor",
-	"eventMgr",
 	"mousetrap",
 	"pagedown",
 	"bootstrap"
-], function($, core, editor, eventMgr, mousetrap) {
+], function($, core, editor, mousetrap) {
 
 	$(function() {
 
@@ -68,7 +67,6 @@ require([
 		};
 
 		editor.init();
-		eventMgr.onReady();
 		core.initEditor();
 	});
 });

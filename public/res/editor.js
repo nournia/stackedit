@@ -2,11 +2,10 @@
 define([
 	'jquery',
 	'underscore',
-	'eventMgr',
 	'prism-core',
 	'diff_match_patch_uncompressed',
 	'libs/prism-markdown'
-], function($, _, eventMgr, Prism, diff_match_patch) {
+], function($, _, Prism, diff_match_patch) {
 
 	var editor = {};
 	var inputElt;

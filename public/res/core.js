@@ -2,9 +2,8 @@
 define([
 	"jquery",
 	"editor",
-	"eventMgr",
 	"mousetrap"
-], function($, editor, eventMgr, mousetrap) {
+], function($, editor, mousetrap) {
 
 	var core = {};
 
@@ -89,11 +88,9 @@ define([
 		$btnGroupElt = $('.wmd-button-group5');
 		$("#wmd-undo-button").append($('<span class="glyphicon glyphicon-arrow-left">')).appendTo($btnGroupElt);
 		$("#wmd-redo-button").append($('<span class="glyphicon glyphicon-arrow-right">')).appendTo($btnGroupElt);
-	};
 
-	// Other initialization that are not prioritary
-	eventMgr.addListener("onReady", function() {
 
+		// Other initialization that are not prioritary
 		$(document.body).on('shown.bs.modal', '.modal', function() {
 			var $elt = $(this);
 			setTimeout(function() {
@@ -137,7 +134,7 @@ define([
 				core.insertLinkCallback = undefined;
 			}
 		});
-	});
+	};
 
 	return core;
 });
