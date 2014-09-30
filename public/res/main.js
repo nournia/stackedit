@@ -47,10 +47,28 @@ require([
 	"core",
 	"editor",
 	"eventMgr",
+	"mousetrap",
+	"pagedown",
 	"bootstrap"
-], function($, core) {
+], function($, core, editor, eventMgr, mousetrap) {
 
 	$(function() {
-		core.onReady();
+
+		// Modal state
+		var isModalShown = false;
+		$(document.body).on('show.bs.modal', '.modal', function() {
+			isModalShown = true;
+		}).on('hidden.bs.modal', '.modal', function() {
+			isModalShown = false;
+		});
+
+		// Configure Mousetrap
+		mousetrap.stopCallback = function() {
+			return isModalShown;
+		};
+
+		editor.init();
+		eventMgr.onReady();
+		core.initEditor();
 	});
 });

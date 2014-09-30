@@ -1,12 +1,9 @@
 /*globals Markdown, requirejs */
 define([
 	"jquery",
-	"underscore",
 	"editor",
-	"eventMgr",
-	"mousetrap",
-	"pagedown"
-], function($, _, editor, eventMgr, mousetrap) {
+	"eventMgr"
+], function($, editor, eventMgr) {
 
 	var core = {};
 
@@ -63,26 +60,6 @@ define([
 		$btnGroupElt = $('.wmd-button-group5');
 		$("#wmd-undo-button").append($('<span class="glyphicon glyphicon-arrow-left">')).appendTo($btnGroupElt);
 		$("#wmd-redo-button").append($('<span class="glyphicon glyphicon-arrow-right">')).appendTo($btnGroupElt);
-	};
-
-	// Modal state
-	var isModalShown = false;
-	$(document.body).on('show.bs.modal', '.modal', function() {
-		isModalShown = true;
-	}).on('hidden.bs.modal', '.modal', function() {
-		isModalShown = false;
-	});
-
-	// Initialize multiple things and then fire eventMgr.onReady
-	core.onReady = function() {
-		// Configure Mousetrap
-		mousetrap.stopCallback = function() {
-			return isModalShown;
-		};
-
-		editor.init();
-		eventMgr.onReady();
-		core.initEditor();
 	};
 
 	// Other initialization that are not prioritary
