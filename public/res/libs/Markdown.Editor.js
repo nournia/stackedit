@@ -1,4 +1,43 @@
-// needs Markdown.Converter.js at the moment
+var Markdown = {};
+
+(function () {
+
+    function identity(x) { return x; }
+    function returnFalse(x) { return false; }
+
+    function HookCollection() { }
+
+    HookCollection.prototype = {
+
+        chain: function (hookname, func) {
+            var original = this[hookname];
+            if (!original)
+                throw new Error("unknown hook " + hookname);
+
+            if (original === identity)
+                this[hookname] = func;
+            else
+                this[hookname] = function (text) {
+                    var args = Array.prototype.slice.call(arguments, 0);
+                    args[0] = original.apply(null, args);
+                    return func.apply(null, args);
+                };
+        },
+        set: function (hookname, func) {
+            if (!this[hookname])
+                throw new Error("unknown hook " + hookname);
+            this[hookname] = func;
+        },
+        addNoop: function (hookname) {
+            this[hookname] = identity;
+        },
+        addFalse: function (hookname) {
+            this[hookname] = returnFalse;
+        }
+    };
+
+    Markdown.HookCollection = HookCollection;
+})();
 
 (function () {
 
@@ -85,10 +124,9 @@
     // `helpButton.title`. This should be considered legacy.
     //
     // The constructed editor object has the methods:
-    // - getConverter() returns the markdown converter object that was passed to the constructor
     // - run() actually starts the editor; should be called after all necessary plugins are registered. Calling this more than once is a no-op.
     // - refreshPreview() forces the preview to be updated. This method is only available after run() was called.
-    Markdown.Editor = function (markdownConverter, idPostfix, options) {
+    Markdown.Editor = function (idPostfix, options) {
 
         options = options || {};
 
@@ -112,8 +150,6 @@
                                                   */
         hooks.addFalse("insertLinkDialog");
 
-        this.getConverter = function () { return markdownConverter; }
-
         var that = this,
             panels;
 
@@ -124,7 +160,7 @@
 
             panels = new PanelCollection(idPostfix);
             var commandManager = new CommandManager(hooks, getString);
-            var previewManager = new PreviewManager(markdownConverter, panels, function () { hooks.onPreviewRefresh(); });
+            var previewManager = new PreviewManager(panels, function () { hooks.onPreviewRefresh(); });
             var uiManager;
 
             if(options.undoManager) {
@@ -851,7 +887,7 @@
         this.init();
     };
 
-    function PreviewManager(converter, panels, previewRefreshCallback) {
+    function PreviewManager(panels, previewRefreshCallback) {
 
         var managerObj = this;
         var timeout;
@@ -907,8 +943,6 @@
             }
 
             var prevTime = new Date().getTime();
-
-            text = converter.makeHtml(text);
 
             // Calculate the processing time of the HTML creation.
             // It's used as the delay time in the event listener.

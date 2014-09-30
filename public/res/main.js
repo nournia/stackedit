@@ -51,9 +51,6 @@ requirejs.config({
 		],
 		bootstrap: [
 			'jquery'
-		],
-		pagedown: [
-			'libs/Markdown.Converter'
 		]
 	}
 });
