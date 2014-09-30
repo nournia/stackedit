@@ -766,6 +766,5 @@ define([
 		section.elt = sectionElt;
 	}
 
-	eventMgr.onEditorCreated(editor);
 	return editor;
 });
