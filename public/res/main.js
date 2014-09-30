@@ -11,7 +11,6 @@ requirejs.config({
 		pagedown: 'libs/Markdown.Editor',
 		prism: 'bower-libs/prism/prism',
 		'prism-core': 'bower-libs/prism/components/prism-core',
-		rangy: 'bower-libs/rangy/rangy-core',
 		diff_match_patch: 'bower-libs/google-diff-match-patch-js/diff_match_patch',
 		diff_match_patch_uncompressed: 'bower-libs/google-diff-match-patch-js/diff_match_patch_uncompressed',
 		jsondiffpatch: 'bower-libs/jsondiffpatch/build/bundle',
@@ -26,9 +25,6 @@ requirejs.config({
 		jsondiffpatch: [
 			'diff_match_patch_uncompressed'
 		],
-		rangy: {
-			exports: 'rangy'
-		},
 		mousetrap: {
 			exports: 'Mousetrap'
 		},
@@ -53,17 +49,13 @@ requirejs.config({
 
 require([
 	"jquery",
-	"rangy",
 	"core",
 	"editor",
 	"eventMgr",
 	"bootstrap"
-], function($, rangy, core) {
+], function($, core) {
 
 	$(function() {
-		rangy.init();
-
-		// Here, all the modules are loaded and the DOM is ready
 		core.onReady();
 	});
 });

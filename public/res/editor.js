@@ -7,9 +7,8 @@ define([
 	'prism-core',
 	'diff_match_patch_uncompressed',
 	'jsondiffpatch',
-	'rangy',
 	'libs/prism-markdown'
-], function($, _, eventMgr, Prism, diff_match_patch, jsondiffpatch, rangy) {
+], function($, _, eventMgr, Prism, diff_match_patch, jsondiffpatch) {
 
 	var editor = {};
 	var inputElt;
@@ -145,7 +144,7 @@ define([
 			var min = Math.min(this.selectionStart, this.selectionEnd);
 			var max = Math.max(this.selectionStart, this.selectionEnd);
 			var range = this.createRange(min, max);
-			var selection = rangy.getSelection();
+			var selection = window.getSelection();
 			selection.removeAllRanges();
 			selection.addRange(range, this.selectionStart > this.selectionEnd);
 		};
@@ -166,7 +165,7 @@ define([
 				if(fileChanged === false) {
 					var selectionStart = self.selectionStart;
 					var selectionEnd = self.selectionEnd;
-					var selection = rangy.getSelection();
+					var selection = window.getSelection();
 					if(selection.rangeCount > 0) {
 						var selectionRange = selection.getRangeAt(0);
 						var element = selectionRange.startContainer;
@@ -182,14 +181,8 @@ define([
 								element = container = container.parentNode;
 							} while(element && element != inputElt);
 
-							if(selection.isBackwards()) {
-								selectionStart = offset + (selectionRange + '').length;
-								selectionEnd = offset;
-							}
-							else {
-								selectionStart = offset;
-								selectionEnd = offset + (selectionRange + '').length;
-							}
+							selectionStart = offset;
+							selectionEnd = offset + (selectionRange + '').length;
 
 							if(selectionStart === selectionEnd && selectionRange.startContainer.textContent == '\n' && selectionRange.startOffset == 1) {
 								// In IE if end of line is selected, offset is wrong
