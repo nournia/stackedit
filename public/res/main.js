@@ -46,26 +46,10 @@ require([
 	"jquery",
 	"core",
 	"editor",
-	"mousetrap",
-	"pagedown",
 	"bootstrap"
-], function($, core, editor, mousetrap) {
+], function($, core, editor) {
 
 	$(function() {
-
-		// Modal state
-		var isModalShown = false;
-		$(document.body).on('show.bs.modal', '.modal', function() {
-			isModalShown = true;
-		}).on('hidden.bs.modal', '.modal', function() {
-			isModalShown = false;
-		});
-
-		// Configure Mousetrap
-		mousetrap.stopCallback = function() {
-			return isModalShown;
-		};
-
 		editor.init();
 		core.initEditor();
 	});

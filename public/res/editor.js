@@ -4,7 +4,8 @@ define([
 	'underscore',
 	'prism-core',
 	'diff_match_patch_uncompressed',
-	'libs/prism-markdown'
+	'libs/prism-markdown',
+	"pagedown"
 ], function($, _, Prism, diff_match_patch) {
 
 	var editor = {};

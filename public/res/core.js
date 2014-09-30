@@ -30,6 +30,19 @@ define([
 		'mod+shift+z': bindPagedownButton('redo')
 	};
 
+	// Modal state
+	var isModalShown = false;
+	$(document.body).on('show.bs.modal', '.modal', function() {
+		isModalShown = true;
+	}).on('hidden.bs.modal', '.modal', function() {
+		isModalShown = false;
+	});
+
+	// Configure Mousetrap
+	mousetrap.stopCallback = function() {
+		return isModalShown;
+	};
+
 	// Create the PageDown editor
 	var pagedownEditor;
 	core.initEditor = function() {
