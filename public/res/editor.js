@@ -6,9 +6,8 @@ define([
 	'eventMgr',
 	'prism-core',
 	'diff_match_patch_uncompressed',
-	'jsondiffpatch',
 	'libs/prism-markdown'
-], function($, _, eventMgr, Prism, diff_match_patch, jsondiffpatch) {
+], function($, _, eventMgr, Prism, diff_match_patch) {
 
 	var editor = {};
 	var inputElt;
@@ -61,17 +60,6 @@ define([
 	editor.watcher = watcher;
 
 	var diffMatchPatch = new diff_match_patch();
-	var jsonDiffPatch = jsondiffpatch.create({
-		objectHash: function(obj) {
-			return JSON.stringify(obj);
-		},
-		arrays: {
-			detectMove: false
-		},
-		textDiff: {
-			minLength: 9999999
-		}
-	});
 
 	function SelectionMgr() {
 		var self = this;
@@ -314,14 +302,9 @@ define([
 
 	function setValue(value) {
 		var startOffset = diffMatchPatch.diff_commonPrefix(textContent, value);
-		if(startOffset === textContent.length) {
+		if(startOffset === textContent.length)
 			startOffset--;
-		}
-		var endOffset = Math.min(
-			diffMatchPatch.diff_commonSuffix(textContent, value),
-				textContent.length - startOffset,
-				value.length - startOffset
-		);
+		var endOffset = Math.min(startOffset, textContent.length - startOffset, value.length - startOffset);
 		var replacement = value.substring(startOffset, value.length - endOffset);
 		var range = selectionMgr.createRange(startOffset, textContent.length - endOffset);
 		range.deleteContents();

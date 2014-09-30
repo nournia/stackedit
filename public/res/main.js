@@ -11,9 +11,7 @@ requirejs.config({
 		pagedown: 'libs/Markdown.Editor',
 		prism: 'bower-libs/prism/prism',
 		'prism-core': 'bower-libs/prism/components/prism-core',
-		diff_match_patch: 'bower-libs/google-diff-match-patch-js/diff_match_patch',
 		diff_match_patch_uncompressed: 'bower-libs/google-diff-match-patch-js/diff_match_patch_uncompressed',
-		jsondiffpatch: 'bower-libs/jsondiffpatch/build/bundle',
 	},
 	shim: {
 		underscore: {
@@ -22,9 +20,6 @@ requirejs.config({
 		diff_match_patch_uncompressed: {
 			exports: 'diff_match_patch'
 		},
-		jsondiffpatch: [
-			'diff_match_patch_uncompressed'
-		],
 		mousetrap: {
 			exports: 'Mousetrap'
 		},
