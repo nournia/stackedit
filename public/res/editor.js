@@ -16,13 +16,41 @@ define([
 	var trailingLfNode;
 	var defaultContent = 'Simple **StackEdit**.';
 
-	var isComposing = 0;
-	eventMgr.addListener('onSectionsCreated', function(newSectionList) {
-		if(!isComposing) {
-			updateSectionList(newSectionList);
-			highlightSections();
+
+	/* Markdown Section Parser */
+	var delimitersRegexp = '^.+[ \\t]*\\n=+[ \\t]*\\n+|^.+[ \\t]*\\n-+[ \\t]*\\n+|^\\#{1,6}[ \\t]*.+?[ \\t]*\\#*\\n+'; // Title delimiters
+	delimitersRegexp = '^```.*\\n[\\s\\S]*?\\n```|' + delimitersRegexp; // Fenced block delimiters
+	delimitersRegexp = new RegExp(delimitersRegexp, 'gm');
+
+	var parserSectionList = [];
+	var sectionCounter = 0;
+
+	function onContentChanged(content) {
+		var text = content;
+		var tmpText = text + "\n\n";
+		function addSection(startOffset, endOffset) {
+			var sectionText = tmpText.substring(offset, endOffset);
+			parserSectionList.push({
+				id: ++sectionCounter,
+				text: sectionText,
+				textWithFrontMatter: sectionText
+			});
 		}
-	});
+		parserSectionList = [];
+		var offset = 0;
+		// Look for delimiters
+		tmpText.replace(delimitersRegexp, function(match, matchOffset) {
+			// Create a new section with the text preceding the delimiter
+			addSection(offset, matchOffset);
+			offset = matchOffset;
+		});
+		// Last section
+		addSection(offset, text.length);
+
+		updateSectionList(parserSectionList);
+		highlightSections();
+	}
+
 
 	// Used to detect editor changes
 	function Watcher() {
@@ -352,7 +380,7 @@ define([
 			watcher.noWatch(function() {
 				if(textContent != state.content) {
 					setValueNoWatch(state.content);
-					eventMgr.onContentChanged(state.content);
+					onContentChanged(state.content);
 				}
 				selectionMgr.setSelectionStartEnd(selectionStart, selectionEnd);
 				selectionMgr.updateSelectionRange();
@@ -406,7 +434,7 @@ define([
 
 	var triggerSpellCheck = _.debounce(function() {
 		var selection = window.getSelection();
-		if(!selectionMgr.hasFocus || isComposing || selectionMgr.selectionStart !== selectionMgr.selectionEnd || !selection.modify) {
+		if(!selectionMgr.hasFocus || selectionMgr.selectionStart !== selectionMgr.selectionEnd || !selection.modify) {
 			return;
 		}
 		// Hack for Chrome to trigger the spell checker
@@ -441,7 +469,7 @@ define([
 		undoMgr.currentMode = undoMgr.currentMode || 'typing';
 		textContent = newTextContent;
 		selectionMgr.saveSelectionState();
-		eventMgr.onContentChanged(textContent);
+		onContentChanged(textContent);
 		undoMgr.saveState();
 		triggerSpellCheck();
 	}
@@ -532,14 +560,6 @@ define([
 				if(evt.which !== 13) {
 					clearNewline = false;
 				}
-			})
-			.on('compositionstart', function() {
-				isComposing++;
-			})
-			.on('compositionend', function() {
-				setTimeout(function() {
-					isComposing--;
-				}, 0);
 			})
 			.on('mouseup', _.bind(selectionMgr.saveSelectionState, selectionMgr, true, false))
 			.on('paste', function(evt) {

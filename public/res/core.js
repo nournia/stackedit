@@ -2,10 +2,34 @@
 define([
 	"jquery",
 	"editor",
-	"eventMgr"
-], function($, editor, eventMgr) {
+	"eventMgr",
+	"mousetrap"
+], function($, editor, eventMgr, mousetrap) {
 
 	var core = {};
+
+	// Shortcuts mapping
+	function bindPagedownButton(buttonName) {
+		return function(evt) {
+			pagedownEditor.uiManager.doClick(pagedownEditor.uiManager.buttons[buttonName]);
+			evt.preventDefault();
+		};
+	}
+	shortcutsMapping = {
+		'mod+b': bindPagedownButton('bold'),
+		'mod+i': bindPagedownButton('italic'),
+		'mod+l': bindPagedownButton('link'),
+		'mod+q': bindPagedownButton('quote'),
+		'mod+k': bindPagedownButton('code'),
+		'mod+g': bindPagedownButton('image'),
+		'mod+o': bindPagedownButton('olist'),
+		'mod+u': bindPagedownButton('ulist'),
+		'mod+h': bindPagedownButton('heading'),
+		'mod+r': bindPagedownButton('hr'),
+		'mod+z': bindPagedownButton('undo'),
+		'mod+y': bindPagedownButton('redo'),
+		'mod+shift+z': bindPagedownButton('redo')
+	};
 
 	// Create the PageDown editor
 	var pagedownEditor;
@@ -36,9 +60,14 @@ define([
 			return true;
 		});
 
-		eventMgr.onPagedownConfigure(pagedownEditor);
+
 		pagedownEditor.run();
 		editor.undoMgr.init();
+
+		// Set shortcuts
+		_.each(shortcutsMapping, function(func, shortcut) {
+			mousetrap.bind(shortcut, func);
+		});
 
 		// Hide default buttons
 		$(".wmd-button-row li").addClass("btn btn-success").css("left", 0).find("span").hide();
