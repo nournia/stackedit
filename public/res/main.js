@@ -12,7 +12,6 @@ requirejs.config({
 		prism: 'bower-libs/prism/prism',
 		'prism-core': 'bower-libs/prism/components/prism-core',
 		rangy: 'bower-libs/rangy/rangy-core',
-		'rangy-cssclassapplier': 'bower-libs/rangy/rangy-cssclassapplier',
 		diff_match_patch: 'bower-libs/google-diff-match-patch-js/diff_match_patch',
 		diff_match_patch_uncompressed: 'bower-libs/google-diff-match-patch-js/diff_match_patch_uncompressed',
 		jsondiffpatch: 'bower-libs/jsondiffpatch/build/bundle',
@@ -30,9 +29,6 @@ requirejs.config({
 		rangy: {
 			exports: 'rangy'
 		},
-		'rangy-cssclassapplier': [
-			'rangy'
-		],
 		mousetrap: {
 			exports: 'Mousetrap'
 		},
@@ -61,7 +57,7 @@ require([
 	"core",
 	"editor",
 	"eventMgr",
-	"rangy-cssclassapplier"
+	"bootstrap"
 ], function($, rangy, core) {
 
 	$(function() {

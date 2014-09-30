@@ -4,8 +4,7 @@ define([
 	"mousetrap",
 	"classes/Extension",
 	"extensions/markdownSectionParser",
-	"extensions/shortcuts",
-	"bootstrap"
+	"extensions/shortcuts"
 ], function($, _, mousetrap, Extension) {
 
 	var eventMgr = {};
@@ -91,7 +90,6 @@ define([
 	// Operations on editor
 	addEventHook("onPagedownConfigure");
 	addEventHook("onSectionsCreated");
-	addEventHook("onCursorCoordinates");
 
 	var onReady = createEventHook("onReady");
 	eventMgr.onReady = function() {
