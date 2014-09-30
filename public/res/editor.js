@@ -1,4 +1,3 @@
-/* jshint -W084, -W099 */
 // Credit to http://dabblet.com/
 define([
 	'jquery',
@@ -24,8 +23,6 @@ define([
 			highlightSections();
 		}
 	});
-
-	var fileChanged = true;
 
 	// Used to detect editor changes
 	function Watcher() {
@@ -66,9 +63,6 @@ define([
 		var lastSelectionStart = 0, lastSelectionEnd = 0;
 		this.selectionStart = 0;
 		this.selectionEnd = 0;
-		this.cursorY = 0;
-		this.adjustTop = 0;
-		this.adjustBottom = 0;
 		this.findOffsets = function(offsetList) {
 			var result = [];
 			if(!offsetList.length) {
@@ -150,139 +144,45 @@ define([
 		};
 		this.saveSelectionState = (function() {
 			function save() {
-				if(fileChanged === false) {
-					var selectionStart = self.selectionStart;
-					var selectionEnd = self.selectionEnd;
-					var selection = window.getSelection();
-					if(selection.rangeCount > 0) {
-						var selectionRange = selection.getRangeAt(0);
-						var element = selectionRange.startContainer;
-						if((contentElt.compareDocumentPosition(element) & 0x10)) {
-							var container = element;
-							var offset = selectionRange.startOffset;
-							do {
-								while(element = element.previousSibling) {
-									if(element.textContent) {
-										offset += element.textContent.length;
-									}
+				var selectionStart = self.selectionStart;
+				var selectionEnd = self.selectionEnd;
+				var selection = window.getSelection();
+				if(selection.rangeCount > 0) {
+					var selectionRange = selection.getRangeAt(0);
+					var element = selectionRange.startContainer;
+					if((contentElt.compareDocumentPosition(element) & 0x10)) {
+						var container = element;
+						var offset = selectionRange.startOffset;
+						do {
+							while(element = element.previousSibling) {
+								if(element.textContent) {
+									offset += element.textContent.length;
 								}
-								element = container = container.parentNode;
-							} while(element && element != inputElt);
-
-							selectionStart = offset;
-							selectionEnd = offset + (selectionRange + '').length;
-
-							if(selectionStart === selectionEnd && selectionRange.startContainer.textContent == '\n' && selectionRange.startOffset == 1) {
-								// In IE if end of line is selected, offset is wrong
-								// Also, in Firefox cursor can be after the trailingLfNode
-								selectionStart = --selectionEnd;
-								self.setSelectionStartEnd(selectionStart, selectionEnd);
-								self.updateSelectionRange();
 							}
+							element = container = container.parentNode;
+						} while(element && element != inputElt);
+
+						selectionStart = offset;
+						selectionEnd = offset + (selectionRange + '').length;
+
+						if(selectionStart === selectionEnd && selectionRange.startContainer.textContent == '\n' && selectionRange.startOffset == 1) {
+							// In IE if end of line is selected, offset is wrong
+							// Also, in Firefox cursor can be after the trailingLfNode
+							selectionStart = --selectionEnd;
+							self.setSelectionStartEnd(selectionStart, selectionEnd);
+							self.updateSelectionRange();
 						}
 					}
+
 					self.setSelectionStartEnd(selectionStart, selectionEnd);
 				}
 				undoMgr.saveSelectionState();
 			}
 
-			var nextTickAdjustScroll = false;
-			var debouncedSave = _.debounce(function() {
+			return function() {
 				save();
-				if(lastSelectionStart === self.selectionStart && lastSelectionEnd === self.selectionEnd) {
-					nextTickAdjustScroll = false;
-				}
-				nextTickAdjustScroll = false;
-			});
-
-			return function(debounced, adjustScroll, forceAdjustScroll) {
-				if(forceAdjustScroll) {
-					lastSelectionStart = undefined;
-					lastSelectionEnd = undefined;
-				}
-				if(debounced) {
-					nextTickAdjustScroll = nextTickAdjustScroll || adjustScroll;
-					return debouncedSave();
-				}
-				else {
-					save();
-				}
 			};
 		})();
-		this.getSelectedText = function() {
-			var min = Math.min(this.selectionStart, this.selectionEnd);
-			var max = Math.max(this.selectionStart, this.selectionEnd);
-			return textContent.substring(min, max);
-		};
-		this.getCoordinates = function(inputOffset, container, offsetInContainer) {
-			if(!container) {
-				var offset = this.findOffsets([inputOffset])[0];
-				container = offset.container;
-				offsetInContainer = offset.offsetInContainer;
-			}
-			var x = 0;
-			var y = 0;
-			if(container.textContent == '\n') {
-				y = container.parentNode.offsetTop + container.parentNode.offsetHeight / 2;
-			}
-			else {
-				var selectedChar = textContent[inputOffset];
-				var startOffset = {
-					container: container,
-					offsetInContainer: offsetInContainer,
-					offset: inputOffset
-				};
-				var endOffset = {
-					container: container,
-					offsetInContainer: offsetInContainer,
-					offset: inputOffset
-				};
-				if(inputOffset > 0 && (selectedChar === undefined || selectedChar == '\n')) {
-					if(startOffset.offset === 0) {
-						// Need to calculate offset-1
-						startOffset = inputOffset - 1;
-					}
-					else {
-						startOffset.offsetInContainer -= 1;
-					}
-				}
-				else {
-					if(endOffset.offset === container.textContent.length) {
-						// Need to calculate offset+1
-						endOffset = inputOffset + 1;
-					}
-					else {
-						endOffset.offsetInContainer += 1;
-					}
-				}
-				var selectionRange = this.createRange(startOffset, endOffset);
-				var selectionRect = selectionRange.getBoundingClientRect();
-				y = selectionRect.top + selectionRect.height / 2 - inputElt.getBoundingClientRect().top + inputElt.scrollTop;
-			}
-			return {
-				x: x,
-				y: y
-			};
-		};
-		this.getClosestWordOffset = function(offset) {
-			var offsetStart = 0;
-			var offsetEnd = 0;
-			var nextOffset = 0;
-			textContent.split(/\s/).some(function(word) {
-				if(word) {
-					offsetStart = nextOffset;
-					offsetEnd = nextOffset + word.length;
-					if(offsetEnd > offset) {
-						return true;
-					}
-				}
-				nextOffset += word.length + 1;
-			});
-			return {
-				start: offsetStart,
-				end: offsetEnd
-			};
-		};
 	}
 
 	var selectionMgr = new SelectionMgr();
@@ -293,7 +193,7 @@ define([
 		if(inputElt === undefined) {
 			return;
 		}
-		selectionMgr.saveSelectionState(true, true, force);
+		selectionMgr.saveSelectionState();
 	}
 
 	editor.adjustCursorPosition = adjustCursorPosition;
@@ -527,32 +427,23 @@ define([
 		}
 		newTextContent = newTextContent.replace(/\r\n?/g, '\n'); // Mac/DOS to Unix
 
-		if(fileChanged === false) {
-			if(newTextContent == textContent) {
-				// User has removed the empty section
-				if(contentElt.children.length === 0) {
-					contentElt.innerHTML = '';
-					sectionList.forEach(function(section) {
-						contentElt.appendChild(section.elt);
-					});
-					addTrailingLfNode();
-				}
-				return;
+		if(newTextContent == textContent) {
+			// User has removed the empty section
+			if(contentElt.children.length === 0) {
+				contentElt.innerHTML = '';
+				sectionList.forEach(function(section) {
+					contentElt.appendChild(section.elt);
+				});
+				addTrailingLfNode();
 			}
-			undoMgr.currentMode = undoMgr.currentMode || 'typing';
-			textContent = newTextContent;
-			selectionMgr.saveSelectionState();
-			eventMgr.onContentChanged(textContent);
-			undoMgr.saveState();
-			triggerSpellCheck();
+			return;
 		}
-		else {
-			textContent = newTextContent;
-			selectionMgr.updateSelectionRange();
-			undoMgr.saveSelectionState();
-			eventMgr.onContentChanged(textContent);
-			fileChanged = false;
-		}
+		undoMgr.currentMode = undoMgr.currentMode || 'typing';
+		textContent = newTextContent;
+		selectionMgr.saveSelectionState();
+		eventMgr.onContentChanged(textContent);
+		undoMgr.saveState();
+		triggerSpellCheck();
 	}
 
 	editor.init = function() {
@@ -767,14 +658,6 @@ define([
 		sectionsToRemove = [];
 		insertBeforeSection = undefined;
 
-		// Render everything if file changed
-		if(fileChanged === true) {
-			sectionsToRemove = sectionList;
-			sectionList = newSectionList;
-			modifiedSections = newSectionList;
-			return;
-		}
-
 		// Find modified section starting from top
 		var leftIndex = sectionList.length;
 		_.some(sectionList, function(section, index) {
@@ -812,8 +695,7 @@ define([
 			rightIndex = leftIndex - sectionList.length;
 		}
 
-		// Create an array composed of left unmodified, modified, right
-		// unmodified sections
+		// Create an array composed of left unmodified, modified, right unmodified sections
 		var leftSections = sectionList.slice(0, leftIndex);
 		modifiedSections = newSectionList.slice(leftIndex, newSectionList.length + rightIndex);
 		var rightSections = sectionList.slice(sectionList.length + rightIndex, sectionList.length);
@@ -829,34 +711,30 @@ define([
 			newSectionEltList.appendChild(section.elt);
 		});
 		watcher.noWatch(function() {
-			if(fileChanged === true) {
-				contentElt.innerHTML = '';
-				contentElt.appendChild(newSectionEltList);
+
+			// Remove outdated sections
+			sectionsToRemove.forEach(function(section) {
+				// section can be already removed
+				section.elt.parentNode === contentElt && contentElt.removeChild(section.elt);
+			});
+
+			if(insertBeforeSection !== undefined) {
+				contentElt.insertBefore(newSectionEltList, insertBeforeSection.elt);
 			}
 			else {
-				// Remove outdated sections
-				sectionsToRemove.forEach(function(section) {
-					// section can be already removed
-					section.elt.parentNode === contentElt && contentElt.removeChild(section.elt);
-				});
-
-				if(insertBeforeSection !== undefined) {
-					contentElt.insertBefore(newSectionEltList, insertBeforeSection.elt);
-				}
-				else {
-					contentElt.appendChild(newSectionEltList);
-				}
-
-				// Remove unauthorized nodes (text nodes outside of sections or duplicated sections via copy/paste)
-				var childNode = contentElt.firstChild;
-				while(childNode) {
-					var nextNode = childNode.nextSibling;
-					if(!childNode.generated) {
-						contentElt.removeChild(childNode);
-					}
-					childNode = nextNode;
-				}
+				contentElt.appendChild(newSectionEltList);
 			}
+
+			// Remove unauthorized nodes (text nodes outside of sections or duplicated sections via copy/paste)
+			var childNode = contentElt.firstChild;
+			while(childNode) {
+				var nextNode = childNode.nextSibling;
+				if(!childNode.generated) {
+					contentElt.removeChild(childNode);
+				}
+				childNode = nextNode;
+			}
+
 			addTrailingLfNode();
 			selectionMgr.updateSelectionRange();
 		});
@@ -881,16 +759,8 @@ define([
 
 	function highlight(section) {
 		var text = escape(section.text);
-		if(!window.viewerMode) {
-			text = Prism.highlight(text, Prism.languages.md);
-		}
-		var frontMatter = section.textWithFrontMatter.substring(0, section.textWithFrontMatter.length - section.text.length);
-		if(frontMatter.length) {
-			// Front matter highlighting
-			frontMatter = escape(frontMatter);
-			frontMatter = frontMatter.replace(/\n/g, '<span class="token lf">\n</span>');
-			text = '<span class="token md">' + frontMatter + '</span>' + text;
-		}
+		text = Prism.highlight(text, Prism.languages.md);
+
 		var sectionElt = $('<span id="wmd-input-section-'+ section.id +'" class="wmd-input-section">'+ text +'</span>')[0];
 		sectionElt.generated = true;
 		section.elt = sectionElt;
