@@ -23,6 +23,9 @@ define([
 			'mod+shift+z': bindPagedownButton('redo')
 		}
 	};
+	_.each(shortcuts.defaultConfig.mapping, function(func, shortcut) {
+		mousetrap.bind(shortcut, func);
+	});
 
 	var eventMgr;
 	var pagedownEditor;
@@ -40,13 +43,6 @@ define([
 			evt.preventDefault();
 		};
 	}
-
-	shortcuts.onInit = function() {
-		var shortcutMap = shortcuts.config.mapping;
-		_.each(shortcutMap, function(func, shortcut) {
-			mousetrap.bind(shortcut, func);
-		});
-	};
 
 	return shortcuts;
 });

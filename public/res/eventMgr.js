@@ -10,25 +10,14 @@ define([
 
 	var extensionList = [markdownSectionParser, shortcuts];
 
-	// Configure extensions
-	var extensionSettings = {};
-	_.each(extensionList, function(extension) {
-		// Set the extension.config attribute from settings or default configuration
-		extension.config = _.extend({}, extension.defaultConfig, extensionSettings[extension.extensionId]);
-
-		extension.enabled = true;
-	});
-
-	// Returns all listeners with the specified name that are implemented in the
-	// enabled extensions
+	// Returns all listeners with the specified name that are implemented in the 	enabled extensions
 	function getExtensionListenerList(eventName) {
 		return _.chain(extensionList).map(function(extension) {
-			return extension.enabled && extension[eventName];
+			return extension[eventName];
 		}).compact().value();
 	}
 
-	// Returns a function that calls every listeners with the specified name
-	// from all enabled extensions
+	// Returns a function that calls every listeners with the specified name from all enabled extensions
 	var eventListenerListMap = {};
 
 	function createEventHook(eventName) {
@@ -61,11 +50,6 @@ define([
 			console.error('No event listener called ' + eventName);
 		}
 	};
-
-	// Call every onInit listeners (enabled extensions only)
-	createEventHook("onInit")();
-
-	addEventHook("onError");
 
 	// To access modules that are loaded after extensions
 	addEventHook("onEditorCreated");
