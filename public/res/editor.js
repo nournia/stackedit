@@ -304,7 +304,11 @@ define([
 		var startOffset = diffMatchPatch.diff_commonPrefix(textContent, value);
 		if(startOffset === textContent.length)
 			startOffset--;
-		var endOffset = Math.min(startOffset, textContent.length - startOffset, value.length - startOffset);
+		var endOffset = Math.min(
+			diffMatchPatch.diff_commonSuffix(textContent, value),
+			textContent.length - startOffset,
+			value.length - startOffset
+		);
 		var replacement = value.substring(startOffset, value.length - endOffset);
 		var range = selectionMgr.createRange(startOffset, textContent.length - endOffset);
 		range.deleteContents();
