@@ -1,23 +1,16 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>StackEdit – Editor</title>
-		<link type="text/css" rel="stylesheet" href="styles/main.css">
-		<link type="text/css" rel="stylesheet" href="bower-libs/bootstrap/dist/css/bootstrap.css">
-
-		<script src="bower-libs/jquery/jquery.js"></script>
-		<script src="bower-libs/underscore/underscore.js"></script>
-		<script src="bower-libs/mousetrap/mousetrap.js"></script>
-		<script src="bower-libs/bootstrap/dist/js/bootstrap.js"></script>
-		<script src="libs/Markdown.Editor.js"></script>
-
-		<script src="bower-libs/prism/prism.js"></script>
-		<script src="libs/prism-markdown.js"></script>
-
-		<script src="bower-libs/google-diff-match-patch-js/diff_match_patch_uncompressed.js"></script>
-	</head>
-
+<head>
+	<title>StackEdit</title>
+</head>
 <body>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/mousetrap/1.4.6/mousetrap.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/diff_match_patch/20121119/diff_match_patch.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
 <div class="layout-wrapper">
 	<div class="navbar navbar-default ui-layout-north">
 		<div class="navbar-inner">
@@ -86,6 +79,11 @@
 	</div>
 </div>
 
+
+<link type="text/css" rel="stylesheet" href="main.css">
+<script src="prism.js"></script>
+<script src="prism-markdown.js"></script>
+<script src="Markdown.Editor.js"></script>
 <script src="editor.js"></script>
 
 </body>
