@@ -736,7 +736,8 @@
 	}
 
 	function addTrailingLfNode() {
-		contentElt.appendChild($('<span class="token lf">\n</span>')[0]);
+		trailingLfNode = $('<span class="token lf">\n</span>')[0];
+		contentElt.appendChild(trailingLfNode);
 	}
 
 	var escape = (function() {
