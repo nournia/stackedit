@@ -124,20 +124,20 @@
 			end = end < 0 ? 0 : end;
 			var range = document.createRange();
 			var offsetList = [], startIndex, endIndex;
-			if(_.isNumber(start)) {
+			if(typeof(start) == 'number') {
 				offsetList.push(start);
 				startIndex = offsetList.length - 1;
 			}
-			if(_.isNumber(end)) {
+			if(typeof(end) == 'number') {
 				offsetList.push(end);
 				endIndex = offsetList.length - 1;
 			}
 			offsetList = this.findOffsets(offsetList);
-			var startOffset = _.isObject(start) ? start : offsetList[startIndex];
+			var startOffset = typeof(start) == 'object' ? start : offsetList[startIndex];
 			range.setStart(startOffset.container, startOffset.offsetInContainer);
 			var endOffset = startOffset;
 			if(end && end != start) {
-				endOffset = _.isObject(end) ? end : offsetList[endIndex];
+				endOffset = typeof(end) == 'object' ? end : offsetList[endIndex];
 			}
 			range.setEnd(endOffset.container, endOffset.offsetInContainer);
 			return range;
@@ -207,7 +207,7 @@
 
 	var selectionMgr = new SelectionMgr();
 	editor.selectionMgr = selectionMgr;
-	$(document).on('selectionchange', '.editor-content', _.bind(selectionMgr.saveSelectionState, selectionMgr, true, false));
+	$(document).on('selectionchange', '.editor-content', selectionMgr.saveSelectionState);
 
 	function adjustCursorPosition(force) {
 		if(inputElt === undefined) {
@@ -322,7 +322,7 @@
 		}; // For compatibility with PageDown
 		this.onButtonStateChange = function() {
 		}; // To be overridden by PageDown
-		this.saveState = _.debounce(function() {
+		this.saveState = function() {
 			redoStack = [];
 			var currentTime = Date.now();
 			if(this.currentMode == 'comment' ||
@@ -353,14 +353,14 @@
 			lastMode = this.currentMode;
 			this.currentMode = undefined;
 			this.onButtonStateChange();
-		}, this);
-		this.saveSelectionState = _.debounce(function() {
+		};
+		this.saveSelectionState = function() {
 			// Should happen just after saveState
 			if(this.currentMode === undefined) {
 				selectionStartBefore = selectionMgr.selectionStart;
 				selectionEndBefore = selectionMgr.selectionEnd;
 			}
-		}, 50);
+		};
 		this.canUndo = function() {
 			return undoStack.length;
 		};
@@ -424,22 +424,6 @@
 	var undoMgr = new UndoMgr();
 	editor.undoMgr = undoMgr;
 
-	var triggerSpellCheck = _.debounce(function() {
-		var selection = window.getSelection();
-		if(!selectionMgr.hasFocus || selectionMgr.selectionStart !== selectionMgr.selectionEnd || !selection.modify) {
-			return;
-		}
-		// Hack for Chrome to trigger the spell checker
-		if(selectionMgr.selectionStart) {
-			selection.modify("move", "backward", "character");
-			selection.modify("move", "forward", "character");
-		}
-		else {
-			selection.modify("move", "forward", "character");
-			selection.modify("move", "backward", "character");
-		}
-	}, 10);
-
 	function checkContentChange() {
 		var newTextContent = inputElt.textContent;
 		if(contentElt.lastChild === trailingLfNode && trailingLfNode.textContent.slice(-1) == '\n') {
@@ -463,7 +447,6 @@
 		selectionMgr.saveSelectionState();
 		onContentChanged(textContent);
 		undoMgr.saveState();
-		triggerSpellCheck();
 	}
 
 	editor.init = function() {
@@ -553,7 +536,7 @@
 					clearNewline = false;
 				}
 			})
-			.on('mouseup', _.bind(selectionMgr.saveSelectionState, selectionMgr, true, false))
+			.on('mouseup', selectionMgr.saveSelectionState)
 			.on('paste', function(evt) {
 				undoMgr.currentMode = 'paste';
 				evt.preventDefault();
@@ -672,7 +655,7 @@
 
 		// Find modified section starting from top
 		var leftIndex = sectionList.length;
-		_.some(sectionList, function(section, index) {
+		$.each(sectionList, function(index, section) {
 			var newSection = newSectionList[index];
 			if(index >= newSectionList.length ||
 				// Check modified
@@ -682,13 +665,13 @@
 				// Check also the content since nodes can be injected in sections via copy/paste
 				section.elt.textContent != newSection.textWithFrontMatter) {
 				leftIndex = index;
-				return true;
+				return false;
 			}
 		});
 
 		// Find modified section starting from bottom
 		var rightIndex = -sectionList.length;
-		_.some(sectionList.slice().reverse(), function(section, index) {
+		$.each(sectionList.slice().reverse(), function(index, section) {
 			var newSection = newSectionList[newSectionList.length - index - 1];
 			if(index >= newSectionList.length ||
 				// Check modified
@@ -698,7 +681,7 @@
 				// Check also the content since nodes can be injected in sections via copy/paste
 				section.elt.textContent != newSection.textWithFrontMatter) {
 				rightIndex = -index;
-				return true;
+				return false;
 			}
 		});
 
@@ -711,7 +694,7 @@
 		var leftSections = sectionList.slice(0, leftIndex);
 		modifiedSections = newSectionList.slice(leftIndex, newSectionList.length + rightIndex);
 		var rightSections = sectionList.slice(sectionList.length + rightIndex, sectionList.length);
-		insertBeforeSection = _.first(rightSections);
+		insertBeforeSection = rightSections[0];
 		sectionsToRemove = sectionList.slice(leftIndex, sectionList.length + rightIndex);
 		sectionList = leftSections.concat(modifiedSections).concat(rightSections);
 	}
@@ -853,7 +836,7 @@
 		editor.undoMgr.init();
 
 		// Set shortcuts
-		_.each(shortcutsMapping, function(func, shortcut) {
+		$.each(shortcutsMapping, function(shortcut, func) {
 			Mousetrap.bind(shortcut, func);
 		});
 
