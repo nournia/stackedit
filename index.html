@@ -11,21 +11,9 @@
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
 <div class="layout-wrapper">
-	<div class="navbar navbar-default ui-layout-north">
-		<div class="navbar-inner">
-			<ul class="nav left-buttons">
-				<li class="wmd-button-group1 btn-group"></li>
-			</ul>
-			<ul class="nav left-buttons">
-				<li class="wmd-button-group2 btn-group"></li>
-			</ul>
-			<ul class="nav left-buttons">
-				<li class="wmd-button-group3 btn-group"></li>
-			</ul>
-			<ul class="nav left-buttons">
-				<li class="wmd-button-group5 btn-group"></li>
-			</ul>
-		</div>
+	<div class="wmd-buttons">
+		<ul class="btn-group">
+		</ul>
 	</div>
 
 	<pre id="wmd-input" class="ui-layout-center form-control"><div class="editor-content" contenteditable=true></div></pre>
@@ -35,18 +23,19 @@
 <div class="modal fade modal-insert-link">
 	<div class="modal-dialog">
 		<div class="modal-content">
-
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
 				<h2 class="modal-title">Hyperlink</h2>
 			</div>
+
 			<div class="modal-body">
 				<p>Please provide the link URL and an optional title:</p>
 				<div class="input-group">
 					<span class="input-group-addon"><span class="glyphicon glyphicon-globe"></span></span><input id="input-insert-link" type="text" class="col-sm-5 form-control" placeholder='http://example.com/ "optional title"' />
 				</div>
 			</div>
+
 			<div class="modal-footer">
 				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
 				<a href="#" class="btn btn-primary action-insert-link"
@@ -59,18 +48,19 @@
 <div class="modal fade modal-insert-image">
 	<div class="modal-dialog">
 		<div class="modal-content">
-
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
 				<h2 class="modal-title">Image</h2>
 			</div>
+
 			<div class="modal-body">
 				<p>Please provide the image URL and an optional title:</p>
 				<div class="input-group">
 					<span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span><input id="input-insert-image" type="text" class="col-sm-5 form-control" placeholder='http://example.com/image.jpg "optional title"' />
 				</div>
 			</div>
+
 			<div class="modal-footer">
 				<a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a> <a href="#" class="btn btn-primary action-insert-image" data-dismiss="modal">OK</a>
 			</div>

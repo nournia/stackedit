@@ -3,15 +3,6 @@ body {
   text-align: start;
 }
 
-.navbar {
-  z-index: 20;
-  margin-bottom: 0 !important;
-}
-.navbar .nav {
-  float: left;
-  margin: 5px 9px;
-}
-
 .input-group {
   direction: ltr;
 }

@@ -845,20 +845,17 @@
 		$(".wmd-button-row li").addClass("btn btn-success").css("left", 0).find("span").hide();
 
 		// Add customized buttons
-		var $btnGroupElt = $('.wmd-button-group1');
+		var $btnGroupElt = $('.wmd-buttons .btn-group');
 		$("#wmd-bold-button").append($('<span class="glyphicon glyphicon-bold">')).appendTo($btnGroupElt);
 		$("#wmd-italic-button").append($('<span class="glyphicon glyphicon-italic">')).appendTo($btnGroupElt);
-		$btnGroupElt = $('.wmd-button-group2');
 		$("#wmd-link-button").append($('<span class="glyphicon glyphicon-link">')).appendTo($btnGroupElt);
 		$("#wmd-quote-button").append($('<span class="glyphicon glyphicon-indent-right">')).appendTo($btnGroupElt);
 		$("#wmd-code-button").append($('<span class="glyphicon glyphicon-align-justify">')).appendTo($btnGroupElt);
 		$("#wmd-image-button").append($('<span class="glyphicon glyphicon-picture">')).appendTo($btnGroupElt);
-		$btnGroupElt = $('.wmd-button-group3');
 		$("#wmd-olist-button").append($('<span class="glyphicon glyphicon-list">')).appendTo($btnGroupElt);
 		$("#wmd-ulist-button").append($('<span class="glyphicon glyphicon-list">')).appendTo($btnGroupElt);
 		$("#wmd-heading-button").append($('<span class="glyphicon glyphicon-text-height">')).appendTo($btnGroupElt);
 		$("#wmd-hr-button").append($('<span class="glyphicon glyphicon-minus">')).appendTo($btnGroupElt);
-		$btnGroupElt = $('.wmd-button-group5');
 		$("#wmd-undo-button").append($('<span class="glyphicon glyphicon-arrow-left">')).appendTo($btnGroupElt);
 		$("#wmd-redo-button").append($('<span class="glyphicon glyphicon-arrow-right">')).appendTo($btnGroupElt);
 
