@@ -3,8 +3,16 @@ body {
   text-align: start;
 }
 
+.layout-wrapper {
+  width: 700px;
+  margin: 30px auto;
+}
+
 .input-group {
   direction: ltr;
+}
+.wmd-buttons ul {
+  padding: 0;
 }
 
 #wmd-input {
@@ -25,7 +33,7 @@ body {
   word-break: normal;
 }
 #wmd-input > .editor-content {
-  padding: 0 100px;
+  padding: 10px 0;
   outline: none;
 }
 #wmd-input.font-monospaced * {
