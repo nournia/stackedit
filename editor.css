@@ -3,11 +3,6 @@ body {
   text-align: start;
 }
 
-.layout-wrapper {
-  width: 700px;
-  margin: 30px auto;
-}
-
 .input-group {
   direction: ltr;
 }

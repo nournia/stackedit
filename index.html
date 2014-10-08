@@ -2,6 +2,11 @@
 <html>
 <head>
 	<title>StackEdit</title>
+	<style type="text/css">
+		#stackedit {
+			margin-top: 20px;
+		}
+	</style>
 </head>
 <body>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -10,22 +15,20 @@
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 
-<div class="layout-wrapper" id="stackedit"></div>
-
-
-<link type="text/css" rel="stylesheet" href="main.css">
+<link type="text/css" rel="stylesheet" href="editor.css">
 <script src="prism.js"></script>
 <script src="prism-markdown.js"></script>
 <script src="Markdown.Editor.js"></script>
 <script src="editor.js"></script>
 
+<div class="container">
+	<div id="stackedit"></div>
+</div>
 
-<script>
-    var editor = $('#stackedit').stackedit();
-    editor.setValue('**salam**');
-    console.log(editor.getValue());
+<script type="text/javascript">
+	var editor = $('#stackedit').stackedit();
+	editor.setValue('Simple **StackEdit**.');
 </script>
-
 
 </body>
 </html>
